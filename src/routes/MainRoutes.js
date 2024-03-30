@@ -7,6 +7,7 @@ import ModifierCompte from '../views/compte/ModifierCompte';
 import CreerCompte from '../views/compte/CreerCompte';
 import Application from '../views/application';
 import Projet from '../views/projet';
+import { Navigate } from 'react-router';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -28,16 +29,33 @@ const MainRoutes = {
   element: <MainLayout />,
   children: [
     {
-      path: '/',
-      element: <DashboardDefault />
-    },
-    {
-      path: 'dashboard',
+      path: 'admin',
       children: [
         {
-          path: 'main',
+          path: 'dashboard',
           element: <DashboardDefault />
-        }
+        },
+        {
+          path: 'gestion',
+          children: [
+            {
+              path: 'compte/ajouter',
+              element: <CreerCompte />
+            },
+            {
+              path: 'compte/modifier',
+              element: <ModifierCompte />
+            }
+          ]
+        },
+        {
+          path: 'app',
+          element: <Application />
+        },
+        {
+          path: 'projet',
+          element: <Projet />
+        },
       ]
     },
     {
@@ -46,19 +64,6 @@ const MainRoutes = {
         {
           path: 'util-typography',
           element: <UtilsTypography />
-        }
-      ]
-    },
-    {
-      path: 'gestion',
-      children: [
-        {
-          path: 'compte/ajouter',
-          element: <CreerCompte />
-        },
-        {
-          path: 'compte/modifier',
-          element: <ModifierCompte />
         }
       ]
     },
@@ -103,12 +108,8 @@ const MainRoutes = {
       element: <SamplePage />
     },
     {
-      path: 'app',
-      element: <Application />
-    },
-    {
-      path: 'projet',
-      element: <Projet />
+      path: '*',
+      element: <Navigate to="/login" replace={true} />
     }
   ]
 };

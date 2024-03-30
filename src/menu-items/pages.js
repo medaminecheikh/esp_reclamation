@@ -28,14 +28,14 @@ const pages = {
           id: 'ajouter',
           title: 'Ajouter',
           type: 'item',
-          url: '/gestion/compte/ajouter',
+          url: '/admin/gestion/compte/ajouter',
           target: false
         },
         {
           id: 'modifier',
           title: 'Modifier',
           type: 'item',
-          url: '/gestion/compte/modifier',
+          url: '/admin/gestion/compte/modifier',
           target: false
         }
       ]
@@ -44,7 +44,7 @@ const pages = {
       id: 'application',
       title: 'Application',
       type: 'item',
-      url: '/app',
+      url: '/admin/app',
       icon: icons.IconLayoutBoard,
       breadcrumbs: true
     },
@@ -52,7 +52,7 @@ const pages = {
       id: 'projet',
       title: 'Projet',
       type: 'item',
-      url: '/projet',
+      url: '/admin/projet',
       icon: icons.IconMicrowave,
       breadcrumbs: true
     }

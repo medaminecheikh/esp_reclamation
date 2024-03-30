@@ -5,7 +5,6 @@ import { CssBaseline, StyledEngineProvider } from '@mui/material';
 
 // routing
 import Routes from 'routes';
-
 // defaultTheme
 import themes from 'themes';
 
