@@ -149,7 +149,7 @@ const FirebaseLogin = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit"
-                        variant="contained" color="secondary" >
+                        variant="contained" sx={{bgcolor:"#535252"}} color={'info'}  >
                   Sign in
                 </Button>
               </AnimateButton>
