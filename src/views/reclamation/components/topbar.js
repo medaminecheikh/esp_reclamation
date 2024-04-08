@@ -9,9 +9,9 @@ import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import { DeleteForever, Logout } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-
+import logo from '../../../assets/images/logo.svg';
 const logoStyle = {
-  width: '140px',
+  width: '150px',
   height: 'auto',
   cursor: 'pointer'
 };
@@ -79,7 +79,7 @@ function AppAppBar() {
             >
               <img
                 src={
-                  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg'
+                  logo
                 }
                 style={logoStyle}
                 alt="ESPRIT"
@@ -106,7 +106,7 @@ function AppAppBar() {
                   sx={{ py: '6px', px: '12px' }}
                 >
                   <Typography variant="body2" color="text.primary">
-                    Highlights
+
                   </Typography>
                 </MenuItem>
                 <MenuItem

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -13,48 +13,60 @@ import {
   Typography
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import { useFormik } from 'formik';
+import * as Yup from 'yup'; // for validation schema
+
+
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  application: '',
+  problem: '',
+  priority: '',
+  description: '',
+  allowExtraEmails: false,
+  file: null,
+};
+
+const validationSchema = Yup.object({
+  firstName: Yup.string().required('Champ requis'),
+  lastName: Yup.string().required('Champ requis'),
+  application: Yup.string().required('Champ requis'),
+  problem: Yup.string().required('Champ requis'),
+  description: Yup.string().max(1000, 'La description ne doit pas dépasser 1000 caractères.').required('Champ requis'),
+  file: Yup.mixed()
+    .required('Fichier requis')
+    .test(
+      'fileSize',
+      'La taille du fichier ne doit pas dépasser 5 Mo',
+      (value) => value && value.size <= 5242880
+    ),
+});
 
 function ReclamationForm() {
-  const [formData, setFormData] = useState({
-    firstname: '',
-    lastname: '',
-    application: '',
-    problem: '',
-    priorite: '',
-    file: '',
-    description: '',
-    allowextraemails: false
-  });
-  const [formErrors, setFormErrors] = useState({});
+
 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const errors = {};
-    if (!formData.firstname) errors.firstname = 'Champ requis';
-    if (!formData.lastname) errors.lastname = 'Champ requis';
-    if (!formData.description) errors.description = 'Champ requis';
-
-// Validation for application and problem (assuming required)
-    if (!formData.application) errors.application = 'Champ requis';
-    if (!formData.problem) errors.problem = 'Champ requis';
-
-// Validation for descriptionProbleme with max character limit
-    if (formData.description && formData.description.length > 1000) {
-      errors.description = 'La description ne doit pas dépasser 1000 caractères.';
-    }
-
-    setFormErrors(errors);
-
-    if (Object.keys(errors).length === 0) {
-      console.log(formData); // Log the form data to console
-      // ... handle form submission logic here (e.g., send data to server)
+    if (event.target.type !== 'checkbox') {
+      const { name, value } = event.target;
+      // Handle file uploads specifically for `file` field
+      if (name === 'file') {
+        formik.setFieldValue('file', event.target.files[0]);
+      } else {
+        formik.setFieldValue(name, value);
+      }
     }
   };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: (values, { resetForm }) => {
+      console.log(values); // Submit form data (e.g., send to server)
+      resetForm(); // Reset form after submission
+    },
+  });
+
 
   return (
     <Box
@@ -69,31 +81,30 @@ function ReclamationForm() {
       <Typography component="h1" variant="h2" sx={{ mt: 1, color: '#212121' }}>
         Remplir Réclamation
       </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2} justifyContent={'space-evenly'}>
           <Grid item xs={12} sm={6}>
             <TextField
-              {...formData} // Spread form data for automatic value setting
-              error={!!formErrors.firstname} // Set error state based on presence of error
+              {...formik.getFieldProps('firstName')} // Use Formik's getFieldProps
+              error={formik.touched.firstName && Boolean(formik.errors.firstName)} // Set error state based on Formik
               onChange={handleChange}
-              name="firstname"
+              name="firstName"
               required
               fullWidth
               id="firstname"
               label="First Name"
-              autoFocus />
+               />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              {...formData} // Spread form data for automatic value setting
-              error={!!formErrors.lastname} // Set error state based on presence of error
+              {...formik.getFieldProps('lastName')}
+              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
               onChange={handleChange}
               required
               fullWidth
-              id="lastname"
+              id="lastName"
               label="Last Name"
-              name="lastname"
-              autoComplete="family-name"
+              name="lastName"
               maxLength={100}
             />
           </Grid>
@@ -102,8 +113,8 @@ function ReclamationForm() {
             <FormControl fullWidth>
               <InputLabel id="application-select-label">Application</InputLabel>
               <Select
-                {...formData} // Spread form data for automatic value setting
-                error={!!formErrors.application} // Set error state based on presence of error
+                {...formik.getFieldProps('application')}
+                error={formik.touched.application && Boolean(formik.errors.application)}
                 onChange={handleChange}
                 fullWidth
                 required
@@ -124,9 +135,8 @@ function ReclamationForm() {
             <FormControl fullWidth>
               <InputLabel id="problem">Problème</InputLabel>
               <Select
-                {...formData} // Spread form data for automatic value setting
-                error={!!formErrors.problem} // Set error state based on presence of error
-                onChange={handleChange}
+                {...formik.getFieldProps('problem')}
+                error={formik.touched.problem && Boolean(formik.errors.problem)}
                 fullWidth
                 required
                 labelId="problem"
@@ -148,21 +158,26 @@ function ReclamationForm() {
             <FormControl fullWidth>
               <InputLabel id="priorite">Priorité</InputLabel>
               <Select
+                {...formik.getFieldProps('priority')} // Apply Formik props for integration
+                error={formik.touched.priority && Boolean(formik.errors.priority)} // Set error state
                 fullWidth
                 labelId="priorite"
                 id="priorite"
                 name="priorite"
                 maxLength={500}
               >
-                <MenuItem value="">Choisir un problème</MenuItem>
+                <MenuItem value="" disabled={true}>Choisir un problème</MenuItem>
+                <MenuItem value="f">faible</MenuItem>
+                <MenuItem value="m">Moyenne</MenuItem>
+                <MenuItem value="e">Elevée</MenuItem>
                 {/* Add options for problems here */}
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
             <TextField
-              {...formData} // Spread form data for automatic value setting
-              error={!!formErrors.description} // Set error state based on presence of error
+              {...formik.getFieldProps('description')}
+              error={formik.touched.description && Boolean(formik.errors.description)}
               onChange={handleChange}
               required
               maxLength={500}
@@ -187,8 +202,8 @@ function ReclamationForm() {
           </Grid>
           <Grid item xs={12} display="flex" justifyContent="end">
             <FormControlLabel
-              control={<Checkbox value="allowextraemails" color="primary" />}
-              label="I want to receive updates via email."
+              control={<Checkbox  value="allowextraemails" color="primary" />}
+              label="I want to receive a copy via email."
             />
           </Grid>
         </Grid>
