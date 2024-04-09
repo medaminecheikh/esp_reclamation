@@ -22,7 +22,7 @@ const initialValues = {
   lastName: '',
   application: '',
   problem: '',
-  priority: '',
+  priorite: '',
   description: '',
   allowExtraEmails: false,
   file: null,
@@ -133,22 +133,22 @@ function ReclamationForm() {
           </Grid>
           <Grid item xs={12} sm={4}>
             <FormControl fullWidth>
-              <InputLabel id="problem">Problème</InputLabel>
+              <InputLabel id="problem-label">Problème</InputLabel>
               <Select
                 {...formik.getFieldProps('problem')}
                 error={formik.touched.problem && Boolean(formik.errors.problem)}
                 fullWidth
                 required
-                labelId="problem"
+                labelId="problem-label"
                 id="problem"
                 name="problem"
                 maxLength={500}
               >
                 <MenuItem value="">Choisir un problème</MenuItem>
-                <MenuItem value="motDePasseIncorrect">Mot de passe incorrect</MenuItem>
-                <MenuItem value="compteBloque">Compte bloqué</MenuItem>
-                <MenuItem value="connexionImpossible">Connexion impossible</MenuItem>
-                <MenuItem value="bugPage">Bug sur la page</MenuItem>
+                <MenuItem value={'motDePasseIncorrect'}>Mot de passe incorrect</MenuItem>
+                <MenuItem value={'compteBloque'}>Compte bloqué</MenuItem>
+                <MenuItem value={'connexionImpossible'}>Connexion impossible</MenuItem>
+                <MenuItem value={'bugPage'}>Bug sur la page</MenuItem>
 
                 {/* Add options for problems here */}
               </Select>
@@ -156,20 +156,20 @@ function ReclamationForm() {
           </Grid>
           <Grid item xs={12} sm={3}>
             <FormControl fullWidth>
-              <InputLabel id="priorite">Priorité</InputLabel>
+              <InputLabel id="priorite-label">Priorité</InputLabel>
               <Select
                 {...formik.getFieldProps('priority')} // Apply Formik props for integration
-                error={formik.touched.priority && Boolean(formik.errors.priority)} // Set error state
+                error={formik.touched.priorite && Boolean(formik.errors.priorite)} // Set error state
                 fullWidth
-                labelId="priorite"
+                labelId="priorite-label"
                 id="priorite"
                 name="priorite"
                 maxLength={500}
               >
-                <MenuItem value="" disabled={true}>Choisir un problème</MenuItem>
-                <MenuItem value="f">faible</MenuItem>
-                <MenuItem value="m">Moyenne</MenuItem>
-                <MenuItem value="e">Elevée</MenuItem>
+                <MenuItem value={''} disabled={true}>Choisir un problème</MenuItem>
+                <MenuItem value={'f'}>faible</MenuItem>
+                <MenuItem value={'m'}>Moyenne</MenuItem>
+                <MenuItem value={'e'}>Elevée</MenuItem>
                 {/* Add options for problems here */}
               </Select>
             </FormControl>
