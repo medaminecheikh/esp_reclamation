@@ -22,7 +22,7 @@ const initialValues = {
   lastName: '',
   application: '',
   problem: '',
-  priorite: '',
+  priorite: 'f',
   description: '',
   allowExtraEmails: false,
   file: null,
@@ -34,40 +34,27 @@ const validationSchema = Yup.object({
   application: Yup.string().required('Champ requis'),
   problem: Yup.string().required('Champ requis'),
   description: Yup.string().max(1000, 'La description ne doit pas dépasser 1000 caractères.').required('Champ requis'),
-  file: Yup.mixed()
-    .required('Fichier requis')
-    .test(
-      'fileSize',
-      'La taille du fichier ne doit pas dépasser 5 Mo',
-      (value) => value && value.size <= 5242880
-    ),
+  file: Yup.mixed().notRequired()
+      .test(
+          'fileSize',
+          'La taille du fichier ne doit pas dépasser 5 Mo',
+          (value) => !value || (value && value.size <= 5242880)
+      ),
 });
 
 function ReclamationForm() {
 
-
-  const handleChange = (event) => {
-    if (event.target.type !== 'checkbox') {
-      const { name, value } = event.target;
-      // Handle file uploads specifically for `file` field
-      if (name === 'file') {
-        formik.setFieldValue('file', event.target.files[0]);
-      } else {
-        formik.setFieldValue(name, value);
-      }
-    }
-  };
-
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       console.log(values); // Submit form data (e.g., send to server)
-      resetForm(); // Reset form after submission
     },
   });
 
-
+  const handleFileChange = (event) => {
+    formik.setFieldValue('file', event.currentTarget.files[0]);
+  };
   return (
     <Box
       sx={{
@@ -87,7 +74,6 @@ function ReclamationForm() {
             <TextField
               {...formik.getFieldProps('firstName')} // Use Formik's getFieldProps
               error={formik.touched.firstName && Boolean(formik.errors.firstName)} // Set error state based on Formik
-              onChange={handleChange}
               name="firstName"
               required
               fullWidth
@@ -99,7 +85,6 @@ function ReclamationForm() {
             <TextField
               {...formik.getFieldProps('lastName')}
               error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-              onChange={handleChange}
               required
               fullWidth
               id="lastName"
@@ -115,15 +100,12 @@ function ReclamationForm() {
               <Select
                 {...formik.getFieldProps('application')}
                 error={formik.touched.application && Boolean(formik.errors.application)}
-                onChange={handleChange}
                 fullWidth
                 required
                 labelId="application-select-label"
                 id="application"
                 name="application"
-                maxLength={500}
               >
-                <MenuItem value="">Choisir une application</MenuItem>
                 <MenuItem value="etudiant">Espace etudiant</MenuItem>
                 <MenuItem value="pfe">Site PFE</MenuItem>
                 <MenuItem value="forum">Forum</MenuItem>
@@ -142,13 +124,12 @@ function ReclamationForm() {
                 labelId="problem-label"
                 id="problem"
                 name="problem"
-                maxLength={500}
+
               >
-                <MenuItem value="">Choisir un problème</MenuItem>
-                <MenuItem value={'motDePasseIncorrect'}>Mot de passe incorrect</MenuItem>
-                <MenuItem value={'compteBloque'}>Compte bloqué</MenuItem>
-                <MenuItem value={'connexionImpossible'}>Connexion impossible</MenuItem>
-                <MenuItem value={'bugPage'}>Bug sur la page</MenuItem>
+                <MenuItem value="motDePasseIncorrect">Mot de passe incorrect</MenuItem>
+                <MenuItem value="compteBloque">Compte bloqué</MenuItem>
+                <MenuItem value="connexionImpossible">Connexion impossible</MenuItem>
+                <MenuItem value="bugPage">Bug sur la page</MenuItem>
 
                 {/* Add options for problems here */}
               </Select>
@@ -158,18 +139,16 @@ function ReclamationForm() {
             <FormControl fullWidth>
               <InputLabel id="priorite-label">Priorité</InputLabel>
               <Select
-                {...formik.getFieldProps('priority')} // Apply Formik props for integration
+                {...formik.getFieldProps('priorite')} // Apply Formik props for integration
                 error={formik.touched.priorite && Boolean(formik.errors.priorite)} // Set error state
                 fullWidth
                 labelId="priorite-label"
                 id="priorite"
                 name="priorite"
-                maxLength={500}
               >
-                <MenuItem value={''} disabled={true}>Choisir un problème</MenuItem>
-                <MenuItem value={'f'}>faible</MenuItem>
-                <MenuItem value={'m'}>Moyenne</MenuItem>
-                <MenuItem value={'e'}>Elevée</MenuItem>
+                <MenuItem value="f">Faible</MenuItem>
+                <MenuItem value="m">Moyenne</MenuItem>
+                <MenuItem value="e">Élevée</MenuItem>
                 {/* Add options for problems here */}
               </Select>
             </FormControl>
@@ -178,7 +157,6 @@ function ReclamationForm() {
             <TextField
               {...formik.getFieldProps('description')}
               error={formik.touched.description && Boolean(formik.errors.description)}
-              onChange={handleChange}
               required
               maxLength={500}
               fullWidth
@@ -195,14 +173,13 @@ function ReclamationForm() {
               id="file"
               type="file"
               label="Sélectionner un fichier" // Label
-              onChange={handleChange}
-              focused
+              onChange={handleFileChange}              focused
               fullWidth // To occupy full width
             />
           </Grid>
           <Grid item xs={12} display="flex" justifyContent="end">
             <FormControlLabel
-              control={<Checkbox  value="allowextraemails" color="primary" />}
+              control={<Checkbox  {...formik.getFieldProps('allowExtraEmails')} color="primary" />}
               label="I want to receive a copy via email."
             />
           </Grid>
