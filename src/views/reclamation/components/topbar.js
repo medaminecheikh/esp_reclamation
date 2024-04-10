@@ -10,6 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import {DeleteForever, Logout} from '@mui/icons-material';
 import {IconButton} from '@mui/material';
 import logo from '../../../assets/images/logo.svg';
+import { useNavigate } from 'react-router-dom';
+import {IconToiletPaper} from "@tabler/icons-react";
 
 const logoStyle = {
     width: '140px',
@@ -21,18 +23,14 @@ function AppAppBar() {
     const handleReload = () => {
         window.location.reload();
     };
-    const scrollToSection = (sectionId) => {
-        const sectionElement = document.getElementById(sectionId);
-        const offset = 128;
-        if (sectionElement) {
-            const targetScroll = sectionElement.offsetTop - offset;
-            sectionElement.scrollIntoView({behavior: 'smooth'});
-            window.scrollTo({
-                top: targetScroll,
-                behavior: 'smooth'
-            });
-            setOpen(false);
-        }
+
+    const navigate = useNavigate();
+
+    const navigateToLogs = () => {
+        navigate('/esp/historique/'); // Redirect to the specified URL
+    };
+    const navigateToRec = () => {
+        navigate('/esp/reclamation/'); // Redirect to the specified URL
     };
 
     return (
@@ -91,21 +89,17 @@ function AppAppBar() {
                                 width: 'calc(69% - 48px)', // Adjust the width accordingly
                             }}>
                                 <MenuItem
-                                    sx={{py: '6px', px: '12px'}}
+                                    onClick={navigateToRec}
+                                    sx={{py: '6px', px: '12px',justifyContent: 'space-evenly'}}
+
                                 >
-                                    <Typography variant="h4" color="#C62828">
+                                    <Typography variant="h4" color="#C62828" sx={{ marginRight: 1 }} >
                                         <i> Espace Réclamation</i>
                                     </Typography>
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={() => scrollToSection('testimonials')}
-                                    sx={{py: '6px', px: '12px'}}
-                                >
-                                    <Typography variant="body2" color="text.primary">
-                                        Testimonials
+                                    <Typography variant="body2" color="text.primary" sx={{ overflow:1  }} >
+                                        mahmoudss.balour@esprit.tn
                                     </Typography>
                                 </MenuItem>
-
 
                                 <MenuItem
                                     sx={{py: '6px', px: '12px'}}
@@ -120,7 +114,7 @@ function AppAppBar() {
                             <MenuItem
                                 sx={{py: '6px', px: '12px'}}
                             >
-                                <Button aria-label="delete" size="large" onClick={handleReload} color="primary">
+                                <Button startIcon={<IconToiletPaper />} aria-label="delete" size="large" onClick={navigateToLogs} sx={{color:"#050505"}}>
                                     Historique
                                 </Button>
                             </MenuItem>
