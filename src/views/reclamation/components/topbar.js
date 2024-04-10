@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import {DeleteForever, Logout} from '@mui/icons-material';
 import {IconButton} from '@mui/material';
 import logo from '../../../assets/images/logo.svg';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {IconToiletPaper} from "@tabler/icons-react";
 
 const logoStyle = {
@@ -31,6 +31,9 @@ function AppAppBar() {
     };
     const navigateToRec = () => {
         navigate('/esp/reclamation/'); // Redirect to the specified URL
+    };
+    const navigateToLogin = () => {
+        navigate('/login/'); // Redirect to the specified URL
     };
 
     return (
@@ -82,21 +85,21 @@ function AppAppBar() {
                                 style={logoStyle}
                                 alt="ESPRIT"
                             />
-                            <Box   sx={{
-                                display: { xs: 'none', md: 'flex' },
+                            <Box sx={{
+                                display: {xs: 'none', md: 'flex'},
                                 justifyContent: 'space-evenly',
                                 alignItems: 'center',
                                 width: 'calc(69% - 48px)', // Adjust the width accordingly
                             }}>
                                 <MenuItem
                                     onClick={navigateToRec}
-                                    sx={{py: '6px', px: '12px',justifyContent: 'space-evenly'}}
+                                    sx={{py: '6px', px: '12px', justifyContent: 'space-evenly'}}
 
                                 >
-                                    <Typography variant="h4" color="#C62828" sx={{ marginRight: 1 }} >
+                                    <Typography variant="h4" color="#C62828" sx={{marginRight: 1}}>
                                         <i> Espace Réclamation</i>
                                     </Typography>
-                                    <Typography variant="body2" color="text.primary" sx={{ overflow:1  }} >
+                                    <Typography variant="body2" color="text.primary" sx={{overflow: 1}}>
                                         mahmoudss.balour@esprit.tn
                                     </Typography>
                                 </MenuItem>
@@ -110,11 +113,12 @@ function AppAppBar() {
                                 </MenuItem>
                             </Box>
                         </Box>
-                        <Box sx={{ flex: '1 1 25%' }}>
+                        <Box sx={{flex: '1 1 15%'}}>
                             <MenuItem
                                 sx={{py: '6px', px: '12px'}}
                             >
-                                <Button startIcon={<IconToiletPaper />} aria-label="delete" size="large" onClick={navigateToLogs} sx={{color:"#050505"}}>
+                                <Button startIcon={<IconToiletPaper/>} aria-label="delete" size="large"
+                                        onClick={navigateToLogs} sx={{color: "#050505"}}>
                                     Historique
                                 </Button>
                             </MenuItem>
@@ -123,11 +127,12 @@ function AppAppBar() {
                             sx={{
                                 display: {xs: 'none', md: 'flex'},
                                 gap: 0.5,
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                marginLeft:4
                             }}
                         >
                             <Button size="small" color="info" sx={{bgcolor: "#535252"}}
-                                    variant="contained" endIcon={<Logout/>}>Logout</Button>
+                                    onClick={navigateToLogin} variant="contained" endIcon={<Logout/>}>Logout</Button>
                         </Box>
 
                     </Toolbar>
