@@ -13,8 +13,9 @@ import {
   Typography
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { useFormik } from 'formik';
-import * as Yup from 'yup'; // for validation schema
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
+import GetProjects from "./formApi/GetProjects"; // for validation schema
 
 
 const initialValues = {
@@ -43,6 +44,8 @@ const validationSchema = Yup.object({
 });
 
 function ReclamationForm() {
+  const projectData = GetProjects; // Receive data here
+
 
   const formik = useFormik({
     initialValues,
@@ -106,6 +109,11 @@ function ReclamationForm() {
                 id="application"
                 name="application"
               >
+                {projectData.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.name}
+                    </MenuItem>
+                ))}
                 <MenuItem value="etudiant">Espace etudiant</MenuItem>
                 <MenuItem value="pfe">Site PFE</MenuItem>
                 <MenuItem value="forum">Forum</MenuItem>
