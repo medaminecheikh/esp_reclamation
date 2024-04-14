@@ -15,25 +15,24 @@ import {
 import SendIcon from '@mui/icons-material/Send';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import GetProjects from "./formApi/GetProjects"; // for validation schema
-
+import UseGetJiraData from "../../../services/jiraAPI/requests/useGetJiraData";
+import UsePostJiraIssue from "../../../services/jiraAPI/requests/usePostJiraData";
 
 const initialValues = {
-  firstName: '',
-  lastName: '',
-  application: '',
-  problem: '',
-  priorite: 'f',
+  summary: '',
+  projectKey: '',
+  reporter: 'mahmoudi.API@esprit.tn',
+  labels: '',
+  priority: '3',
   description: '',
   allowExtraEmails: false,
   file: null,
 };
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('Champ requis'),
-  lastName: Yup.string().required('Champ requis'),
-  application: Yup.string().required('Champ requis'),
-  problem: Yup.string().required('Champ requis'),
+  summary: Yup.string().required('Champ requis'),
+  projectKey: Yup.string().required('Champ requis'),
+  labels: Yup.string().required('Champ requis'),
   description: Yup.string().max(1000, 'La description ne doit pas dépasser 1000 caractères.').required('Champ requis'),
   file: Yup.mixed().notRequired()
       .test(
@@ -44,14 +43,33 @@ const validationSchema = Yup.object({
 });
 
 function ReclamationForm() {
-  const projectData = GetProjects; // Receive data here
-
-
+  const { data, error } = UseGetJiraData();
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async  (values) => {
       console.log(values); // Submit form data (e.g., send to server)
+      const postData = {
+        fields: {
+            project: { key: values.projectKey },
+            summary: values.summary,
+            description: values.description,
+            issuetype: { name: 'Bug' }, // or any other issue type you want
+            customfield_10112:  values.reporter  ,
+            labels: [values.labels],
+            priority: { id: values.priority }
+            // Additional fields as needed
+        }
+    };
+        console.log(postData); // Submit form data (e.g., send to server)
+    
+
+   try {
+      const response = await UsePostJiraIssue(postData); // Call the UsePostJiraIssue function
+      console.log("RESPONSE POST ",response);
+    } catch (error) {
+      console.error('Error posting JIRA issue:', error);
+    }
     },
   });
 
@@ -73,51 +91,43 @@ function ReclamationForm() {
       </Typography>
       <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2} justifyContent={'space-evenly'}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} >
             <TextField
-              {...formik.getFieldProps('firstName')} // Use Formik's getFieldProps
-              error={formik.touched.firstName && Boolean(formik.errors.firstName)} // Set error state based on Formik
-              name="firstName"
+              {...formik.getFieldProps('summary')} // Use Formik's getFieldProps
+              error={formik.touched.summary && Boolean(formik.errors.summary)} // Set error state based on Formik
+              name="summary"
               required
               fullWidth
-              id="firstname"
-              label="First Name"
+              id="summary"
+              label="Sommaire"
                />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              {...formik.getFieldProps('lastName')}
-              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-              required
-              fullWidth
-              id="lastName"
-              label="Last Name"
-              name="lastName"
-              maxLength={100}
-            />
-          </Grid>
+          
 
           <Grid item xs={12} sm={4}>
             <FormControl fullWidth>
               <InputLabel id="application-select-label">Application</InputLabel>
               <Select
-                {...formik.getFieldProps('application')}
-                error={formik.touched.application && Boolean(formik.errors.application)}
+                {...formik.getFieldProps('projectKey')}
+                error={formik.touched.projectKey && Boolean(formik.errors.projectKey)}
                 fullWidth
                 required
                 labelId="application-select-label"
-                id="application"
-                name="application"
+                id="projectKey"
+                name="projectKey"
               >
-                {projectData.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.name}
-                    </MenuItem>
-                ))}
-                <MenuItem value="etudiant">Espace etudiant</MenuItem>
-                <MenuItem value="pfe">Site PFE</MenuItem>
-                <MenuItem value="forum">Forum</MenuItem>
-                {/* Add options for applications here */}
+               {error ? (
+    <MenuItem disabled>Error fetching data</MenuItem>
+) : (
+    data && data.length > 0 ? (
+        data.map((project) => (
+            <MenuItem key={project.key} value={project.key}>{project.name}</MenuItem>
+        ))
+    ) : (
+        <MenuItem disabled>No projects found</MenuItem>
+    )
+)}
+
               </Select>
             </FormControl>
           </Grid>
@@ -125,13 +135,13 @@ function ReclamationForm() {
             <FormControl fullWidth>
               <InputLabel id="problem-label">Problème</InputLabel>
               <Select
-                {...formik.getFieldProps('problem')}
-                error={formik.touched.problem && Boolean(formik.errors.problem)}
+                {...formik.getFieldProps('labels')}
+                error={formik.touched.labels && Boolean(formik.errors.labels)}
                 fullWidth
                 required
                 labelId="problem-label"
-                id="problem"
-                name="problem"
+                id="labels"
+                name="labels"
 
               >
                 <MenuItem value="motDePasseIncorrect">Mot de passe incorrect</MenuItem>
@@ -147,16 +157,16 @@ function ReclamationForm() {
             <FormControl fullWidth>
               <InputLabel id="priorite-label">Priorité</InputLabel>
               <Select
-                {...formik.getFieldProps('priorite')} // Apply Formik props for integration
-                error={formik.touched.priorite && Boolean(formik.errors.priorite)} // Set error state
+                {...formik.getFieldProps('priority')} // Apply Formik props for integration
+                error={formik.touched.priority && Boolean(formik.errors.priority)} // Set error state
                 fullWidth
                 labelId="priorite-label"
-                id="priorite"
-                name="priorite"
+                id="priority"
+                name="priority"
               >
-                <MenuItem value="f">Faible</MenuItem>
-                <MenuItem value="m">Moyenne</MenuItem>
-                <MenuItem value="e">Élevée</MenuItem>
+                <MenuItem value="4">Faible</MenuItem>
+                <MenuItem value="3">Moyenne</MenuItem>
+                <MenuItem value="2">Élevée</MenuItem>
                 {/* Add options for problems here */}
               </Select>
             </FormControl>

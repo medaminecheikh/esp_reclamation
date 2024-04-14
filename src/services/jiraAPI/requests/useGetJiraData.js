@@ -1,41 +1,43 @@
-import { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {jiraAuth} from "../utils/jiraConst"; // Or use Fetch API if preferred
+import {jiraAuth} from "../utils/jiraConst";
 
-function UseGetJiraData(url, options = {}) {
+
+function UseGetJiraData() {
     const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+
     const [error, setError] = useState(null);
+
+    const JIRA_USERNAME = jiraAuth.username;
+    const JIRA_PASSWORD = jiraAuth.password;
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8080/rest/api/2/project',
+        headers: {
+            'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
+            , 'Content-Type': 'application/json'
+        }
+    };
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                if (!jiraAuth.username || !jiraAuth.password) {
-                    throw new Error('Missing Jira credentials (REACT_APP_JIRA_USERNAME and REACT_APP_JIRA_PASSWORD)');
-                }
-                // Customize authentication logic based on your API requirements
-                let newOptions = { ...options };
-                if (typeof window.btoa === 'function') { // Check for Base64 encoding support
-                    const encodedCredentials = btoa(`${jiraAuth.username}:${jiraAuth.password}`);
-                    newOptions.headers = {
-                        Authorization: `Basic ${encodedCredentials}`, // Basic auth with Base64 encoded credentials
-                    };
-                } else {
-                    console.warn('Base64 encoding not available, authentication might not work.');
-                }
-                const response = await axios.get(url, newOptions);
-                setData(response.data);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setIsLoading(false);
-            }
+            console.log('Get Jira called');
+            axios.request(config)
+                .then((response) => {
+                    console.log(JSON.stringify(response.data));
+                    setData(response.data);
+                })
+                .catch((error) => {
+                    setError(error);
+                    console.log(error);
+
+                });
         };
 
         fetchData();
-    }, [url, ...Object.values(options)]); // Re-fetch on URL or option changes
+    }, []); // Re-run when these dependencies change
 
-    return { data, isLoading, error };
+    return {data, error};
 }
 
 export default UseGetJiraData;

@@ -4,6 +4,7 @@ import ReclamationForm from './components/ReclamationForm';
 import AppAppBar from './components/topbar';
 
 
+
 export default function Reclamation() {
 
   return (
@@ -14,7 +15,7 @@ export default function Reclamation() {
         <AppAppBar />
         <Grid container spacing={3} >
           <Grid item xs >
-
+         
           </Grid>
           <Grid item xs={8} sm={7} sx={{ alignItems: 'center', padding: 2 }}>
             <ReclamationForm />
