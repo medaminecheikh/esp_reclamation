@@ -4,6 +4,9 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorIcon from '@mui/icons-material/Error';
 import Chip from '@mui/material/Chip';
+import Grow from '@mui/material/Grow';
+
+
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return new Date(dateString).toLocaleDateString("en-US", options);
@@ -35,6 +38,11 @@ function ListIssues() {
       {dataIssueByField && dataIssueByField.issues.length > 0 ? (
         <ul>
           {sortIssuesByDate(dataIssueByField.issues).map(issue => (
+             <Grow
+              key={issue.id}
+              in={true}
+              timeout={2500 } // Adjust the delay as needed
+            >
             <li key={issue.id}>
               <h3>{issue.fields.summary}</h3>
               <p><strong>Issue Type:</strong> {issue.fields.issuetype.name}</p>
@@ -51,6 +59,7 @@ function ListIssues() {
               }
               {/* Add more fields as needed */}
             </li>
+            </Grow>
           ))}
         </ul>
       ) : (
