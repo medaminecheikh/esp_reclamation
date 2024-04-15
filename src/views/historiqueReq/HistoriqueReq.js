@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Box, CssBaseline, Grid} from "@mui/material";
 import AppAppBar from "../reclamation/components/topbar";
 import ListIssues from '../historiqueReq/historiqueComp/ListIssues'
 
+
 function HistoriqueReq() {
-    
+   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+
     return (
         
         <Box
@@ -13,9 +18,7 @@ function HistoriqueReq() {
           
             <Box sx={{ flexGrow: 1 }}>
                 <AppAppBar />
-                  <Grid item xs={12}
-            sx={{ display: 'flex', flexGrow: 1, width: '100%', height: '160px'}}>
-            </Grid>
+            
                 <Grid container spacing={3} >
                     <Grid item xs={2} >
 

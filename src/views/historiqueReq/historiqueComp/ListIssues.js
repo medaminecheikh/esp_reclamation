@@ -5,7 +5,31 @@ import DoneIcon from '@mui/icons-material/Done';
 import ErrorIcon from '@mui/icons-material/Error';
 import Chip from '@mui/material/Chip';
 import Grow from '@mui/material/Grow';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import Divider from '@mui/material/Divider';
+const cardStyle = {
+  width: '600px',
+  margin: '16px',
+  borderRadius: '10px', // Adjust for desired smoothness
+  boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+};
 
+const headerStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginBottom: '8px',
+  alignItems: 'center'
+
+};
+
+const footerStyle = {
+  marginTop: '8px',
+  display: 'flex',
+  justifyContent: 'space-between',
+};
 
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -25,6 +49,9 @@ const statusAttributes = {
 function ListIssues() {
      const { dataIssueByField, errorIssueByField } = GetIssueByField();
 
+
+
+
   if (errorIssueByField) {
     return <div>Error: {errorIssueByField.message}</div>;
         }
@@ -43,22 +70,50 @@ function ListIssues() {
               in={true}
               timeout={2500 } // Adjust the delay as needed
             >
-            <li key={issue.id}>
-              <h3>{issue.fields.summary}</h3>
-              <p><strong>Issue Type:</strong> {issue.fields.issuetype.name}</p>
-              <p><strong>Description:</strong> {issue.fields.description}</p>
-              <div><strong>Status:</strong>  {getStatusChip(issue.fields.status.name)}</div>
-              <p><strong>Reporter:</strong> {issue.fields.customfield_10112}</p>
-              <p><strong>Project:</strong> {issue.fields.project.name}</p>
-              <p><strong>Priority:</strong> {issue.fields.priority.name}</p>
-              <p><strong>Labels:</strong> {issue.fields.labels.join(', ')}</p>
-              <div>Created at: {formatDate(issue.fields.created)}</div>
-              <div>Updated at: {formatDate(issue.fields.updated)}</div>
-              {issue.fields.resolutiondate && 
-                <div>Resolved at: {formatDate(issue.fields.resolutiondate)}</div>
-              }
-              {/* Add more fields as needed */}
-            </li>
+          
+    <Card key={issue.id } style={cardStyle}>
+      <CardContent spacing={5} >
+        <div style={headerStyle}>
+          <Typography variant="h4">{issue.fields.labels.join(', ')}</Typography>
+          <div style={{display:'flex', justifyContent:'space-between'}}>
+            
+            <Chip
+              label={getStatusChip(issue.fields.status.name)}
+              color={issue.fields.status.name === 'In Progress' ? 'warning' : 'success'}
+            />
+          </div>
+        </div>
+        <Divider></Divider>
+        <div style={{display:'flex', justifyContent:'space-between', alignItems: 'center'}}>
+            <Typography variant="body1" component="p">
+                <strong>Site: </strong> {issue.fields.project.name}
+            </Typography>
+             <Typography variant="body1" component="p" style={{alignItems: 'center'}}>
+                 <strong> <KeyboardDoubleArrowUpIcon fontSize="small" color='error'/> {issue.fields.priority.name}</strong>
+            </Typography>
+        </div> 
+
+        <div >
+          <Typography variant="body1">
+            <strong>Sommaire:</strong> {issue.fields.summary}
+          </Typography>
+          <Typography variant="body1">
+            <strong>Description:</strong> {issue.fields.description}
+          </Typography>
+        
+          {/* ... other details ... */}
+        </div>
+        <div style={footerStyle}>
+        <Typography variant="caption"> {issue.fields.customfield_10112}</Typography>
+          <Typography variant="caption">Created at: {formatDate(issue.fields.created)}</Typography>
+          
+          {issue.fields.resolutiondate && (
+            <Typography variant="caption">Resolved at: {formatDate(issue.fields.resolutiondate)}</Typography>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+        
             </Grow>
           ))}
         </ul>
