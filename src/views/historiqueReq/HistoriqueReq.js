@@ -13,7 +13,7 @@ function HistoriqueReq() {
     return (
         
         <Box
-            sx={{ display: 'flex', flexGrow: 1, width: '100%', height: '100vh', alignItems: 'center',marginTop: 10 }}>
+            sx={{ display: 'flex', flexGrow: 1, width: '100%', height: '100vh', alignItems: 'center',marginTop: 2 }}>
             <CssBaseline />
           
             <Box sx={{ flexGrow: 1 }}>

@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+
 const cardStyle = {
   width: '600px',
   margin: '16px',
@@ -61,9 +63,12 @@ function ListIssues() {
   };
   return (
     <div>
-      <h1>List of Issues</h1>
+    <div style={{marginTop:-12}}>
+        <h1 >Liste des Réclamations</h1>
+    </div>
+      
       {dataIssueByField && dataIssueByField.issues.length > 0 ? (
-        <ul>
+        <div>
           {sortIssuesByDate(dataIssueByField.issues).map(issue => (
              <Grow
               key={issue.id}
@@ -84,25 +89,29 @@ function ListIssues() {
           </div>
         </div>
         <Divider></Divider>
-        <div style={{display:'flex', justifyContent:'space-between', alignItems: 'center'}}>
+        <div style={{display:'flex', justifyContent:'space-between', alignItems: 'center',marginBottom:1}}>
             <Typography variant="body1" component="p">
                 <strong>Site: </strong> {issue.fields.project.name}
             </Typography>
              <Typography variant="body1" component="p" style={{alignItems: 'center'}}>
-                 <strong> <KeyboardDoubleArrowUpIcon fontSize="small" color='error'/> {issue.fields.priority.name}</strong>
+                 <strong > <KeyboardDoubleArrowUpIcon fontSize="small" color='error'/> {issue.fields.priority.name}</strong>
             </Typography>
         </div> 
 
-        <div >
-          <Typography variant="body1">
+        <Stack
+        direction="column"
+              alignItems="flex-start"
+                spacing={2}
+            >
+          <Typography  variant="body1" style={{my:1}}>
             <strong>Sommaire:</strong> {issue.fields.summary}
           </Typography>
-          <Typography variant="body1">
+          <Typography  variant="body1" style={{marginTop:3}}>
             <strong>Description:</strong> {issue.fields.description}
           </Typography>
         
           {/* ... other details ... */}
-        </div>
+        </Stack>
         <div style={footerStyle}>
         <Typography variant="caption"> {issue.fields.customfield_10112}</Typography>
           <Typography variant="caption">Created at: {formatDate(issue.fields.created)}</Typography>
@@ -116,7 +125,7 @@ function ListIssues() {
         
             </Grow>
           ))}
-        </ul>
+        </div>
       ) : (
         <div>No issues found.</div>
       )}
