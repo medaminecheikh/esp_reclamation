@@ -8,13 +8,15 @@ import AppAppBar from './components/topbar';
 export default function Reclamation() {
 
   return (
-    <Box
-      sx={{ display: 'flex', flexGrow: 1, width: '100%', height: '100vh', alignItems: 'center' }}>
+    <Box 
+      sx={{ display: 'flex', flexGrow: 1, width: '100%', height: '100vh', alignItems: 'center' }}
+    
+      >
       <CssBaseline />
-      <Box sx={{ flexGrow: 1 }}>
+      <Box >
         <AppAppBar />
         <Grid container spacing={3} >
-          <Grid item xs >
+          <Grid item xs={3}>
          
           </Grid>
           <Grid item xs={8} sm={7} sx={{ alignItems: 'center', padding: 2 }}>
