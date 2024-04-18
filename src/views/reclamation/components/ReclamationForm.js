@@ -78,6 +78,7 @@ function ReclamationForm() {
   };
   return (
     <Box
+    
       sx={{
         marginTop: 10,
         display: 'flex',
@@ -91,7 +92,7 @@ function ReclamationForm() {
       </Typography>
       <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2} justifyContent={'space-evenly'}>
-          <Grid item xs={12} >
+          <Grid item xs={12}  >
             <TextField
               {...formik.getFieldProps('summary')} // Use Formik's getFieldProps
               error={formik.touched.summary && Boolean(formik.errors.summary)} // Set error state based on Formik

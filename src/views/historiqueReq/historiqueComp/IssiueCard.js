@@ -21,7 +21,7 @@ const UseStyles = makeStyles((theme) => ({
   },
 }));
 
-function issueCard({ issue }) {
+function IssueCard({ issue }) {
   const classes = UseStyles();
 
   return (
@@ -58,4 +58,4 @@ function issueCard({ issue }) {
   );
 }
 
-export default issueCard;
+export default IssueCard;

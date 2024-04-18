@@ -54,21 +54,19 @@ function ListIssues() {
 
 
 
-  if (errorIssueByField) {
-    return <div>Error: {errorIssueByField.message}</div>;
-        }
+ 
          const getStatusChip = (statusName) => {
     const { icon, color } = statusAttributes[statusName] || statusAttributes["Default"];
     return <Chip icon={icon} label={statusName} color={color} />;
   };
   return (
-    <div>
-    <div style={{marginTop:-12}}>
+    <div  >
+    <div style={{marginTop:-12}} >
         <h1 >Liste des Réclamations</h1>
     </div>
       
       {dataIssueByField && dataIssueByField.issues.length > 0 ? (
-        <div>
+        <div >
           {sortIssuesByDate(dataIssueByField.issues).map(issue => (
              <Grow
               key={issue.id}
@@ -127,7 +125,7 @@ function ListIssues() {
           ))}
         </div>
       ) : (
-        <div>No issues found.</div>
+        <div>No Data found. {errorIssueByField?.message}</div>
       )}
     </div>
   );

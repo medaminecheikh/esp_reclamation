@@ -20,9 +20,9 @@ const Login = () => {
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <AuthWrapper1>
-      <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
-        <Grid item xs={12}>
+    <AuthWrapper1 >
+      <Grid  container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
+        <Grid  item xs={12}>
           <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
             <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
               <AuthCardWrapper>
@@ -54,9 +54,7 @@ const Login = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to="/pages/register/register3" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Don&apos;t have an account?
-                      </Typography>
+                      
                     </Grid>
                   </Grid>
                 </Grid>
