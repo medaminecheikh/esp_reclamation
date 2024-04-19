@@ -1,15 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState  } from 'react';
 import {Box, CssBaseline, Grid } from "@mui/material";
 import AppAppBar from "../reclamation/components/topbar";
 import ListIssues from '../historiqueReq/historiqueComp/ListIssues'
 import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
+import GetIssueByField from "../../services/jiraAPI/requests/getIssueByfield";
 
 function HistoriqueReq() {
+    const { dataIssueByField, errorIssueByField } = GetIssueByField();
    useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+ // State to track the current page
+    const [page, setPage] = useState(1);
+    // Items per page
+    const itemsPerPage = 5;
+
+    // Function to handle page change
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+       // Function to calculate the number of pages
+    const getPageCount = () => {
+        if (!dataIssueByField) return 0; // Return 0 if dataIssueByField is null
+        return Math.ceil(dataIssueByField.issues.length / itemsPerPage);
+    };
+
+   
+    // Get items for the current page
+    const currentPageItems = dataIssueByField?.issues ? dataIssueByField?.issues.slice((page - 1) * itemsPerPage, page * itemsPerPage) : [];
 
     return (
         
@@ -35,7 +55,13 @@ function HistoriqueReq() {
 
                                 ssss
                             </Box>
-                        <Box>  <Pagination count={10} color="primary" /></Box>
+                        <Box display="flex" justifyContent="center" >    
+                        <Pagination
+                count={getPageCount()}
+                color="primary"
+                onChange={handleChangePage}
+            />
+            </Box>
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -49,7 +75,7 @@ function HistoriqueReq() {
                             padding: 2
                         }}
                     >
-                        <ListIssues />
+                        <ListIssues dataIssueByField={currentPageItems} errorIssueByField={errorIssueByField}/>
                     </Box>
                 </Grid>
             </Grid>

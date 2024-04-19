@@ -24,7 +24,7 @@ function GetIssueByField() {
     };
     useEffect(() => {
         const fetchData = async () => {
-            console.log('Get Jira called');
+            console.log('Get GetIssueByField called');
             axios.request(config)
                 .then((response) => {
                     console.log(JSON.stringify(response.data));

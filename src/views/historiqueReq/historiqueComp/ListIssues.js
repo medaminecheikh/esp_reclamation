@@ -1,5 +1,4 @@
 import React from 'react'
-import GetIssueByField from "../../../services/jiraAPI/requests/getIssueByfield";
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -48,10 +47,7 @@ const statusAttributes = {
   "Done": { icon: <DoneIcon />, color: "success" },
   "Default": { icon: <ErrorIcon />, color: "secondary" } // Fallback for other statuses
 };
-function ListIssues() {
-     const { dataIssueByField, errorIssueByField } = GetIssueByField();
-
-
+function ListIssues({ dataIssueByField, errorIssueByField }) {
 
 
  
@@ -59,12 +55,18 @@ function ListIssues() {
     const { icon, color } = statusAttributes[statusName] || statusAttributes["Default"];
     return <Chip icon={icon} label={statusName} color={color} />;
   };
+
+    if (!dataIssueByField) {
+    return <div>No Data found. {errorIssueByField?.message}</div>;
+  }
+
+  if (dataIssueByField.length === 0) {
+    return <div>No Data found. {errorIssueByField?.message}</div>;
+  }
   return (
-    <div  >
-      
-      {dataIssueByField && dataIssueByField.issues.length > 0 ? (
+    
         <div >
-          {sortIssuesByDate(dataIssueByField.issues).map(issue => (
+          {sortIssuesByDate(dataIssueByField).map(issue => (
              <Grow
               key={issue.id}
               in={true}
@@ -130,10 +132,7 @@ function ListIssues() {
             </Grow>
           ))}
         </div>
-      ) : (
-        <div>No Data found. {errorIssueByField?.message}</div>
-      )}
-    </div>
+     
   );
 }
 export default ListIssues
