@@ -3,6 +3,7 @@ import {Box, CssBaseline, Grid } from "@mui/material";
 import AppAppBar from "../reclamation/components/topbar";
 import ListIssues from '../historiqueReq/historiqueComp/ListIssues'
 import Typography from '@mui/material/Typography';
+import Pagination from '@mui/material/Pagination';
 
 function HistoriqueReq() {
    useEffect(() => {
@@ -26,9 +27,15 @@ function HistoriqueReq() {
             <Grid container spacing={3} justifyContent="center" alignItems="flex-start">
                 <Grid item xs={6} md={4} sx={{ maxWidth: 200,   marginTop: '90px', }}>
                     <Box sx={{ padding: 2 }}>
-                        <Typography variant="h1" gutterBottom>
+                        <Typography variant="h1" gutterBottom color="dark">
                             Liste des Réclamations
                         </Typography>
+                       <Box sx={{width: '100%',
+                            height: 'calc(100vh - 250px)',  overflow: 'auto'}}>
+
+                                ssss
+                            </Box>
+                        <Box>  <Pagination count={10} color="primary" /></Box>
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>

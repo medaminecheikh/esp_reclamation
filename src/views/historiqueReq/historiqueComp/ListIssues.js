@@ -15,7 +15,7 @@ import Stack from '@mui/material/Stack';
 const cardStyle = {
   width: '600px',
   margin: '16px',
-  borderRadius: '10px', // Adjust for desired smoothness
+  borderRadius: '2px', // Adjust for desired smoothness
   boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
 };
 
