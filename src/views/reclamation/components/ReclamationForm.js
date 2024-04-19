@@ -17,6 +17,7 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import UseGetJiraData from "../../../services/jiraAPI/requests/useGetJiraData";
 import UsePostJiraIssue from "../../../services/jiraAPI/requests/usePostJiraData";
+import PostAttachIssue from "../../../services/jiraAPI/requests/postAttachIssue";
 
 const initialValues = {
   summary: '',
@@ -47,7 +48,7 @@ function ReclamationForm() {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: async  (values) => {
+    onSubmit: async  (values, { resetForm }) => {
       console.log(values); // Submit form data (e.g., send to server)
       const postData = {
         fields: {
@@ -67,6 +68,10 @@ function ReclamationForm() {
    try {
       const response = await UsePostJiraIssue(postData); // Call the UsePostJiraIssue function
       console.log("RESPONSE POST ",response);
+      if(values.file){
+          await PostAttachIssue(response.data.key, values.file);
+      }
+      resetForm(); // Reset form values
     } catch (error) {
       console.error('Error posting JIRA issue:', error);
     }

@@ -61,9 +61,6 @@ function ListIssues() {
   };
   return (
     <div  >
-    <div style={{marginTop:-12}} >
-        <h1 >Liste des Réclamations</h1>
-    </div>
       
       {dataIssueByField && dataIssueByField.issues.length > 0 ? (
         <div >
@@ -96,20 +93,29 @@ function ListIssues() {
             </Typography>
         </div> 
 
-        <Stack
-        direction="column"
-              alignItems="flex-start"
-                spacing={2}
-            >
-          <Typography  variant="body1" style={{my:1}}>
-            <strong>Sommaire:</strong> {issue.fields.summary}
-          </Typography>
-          <Typography  variant="body1" style={{marginTop:3}}>
-            <strong>Description:</strong> {issue.fields.description}
-          </Typography>
-        
-          {/* ... other details ... */}
-        </Stack>
+      <Stack
+  direction="column"
+  alignItems="flex-start"
+  spacing={1} // This controls the space between each stack item
+>
+<Typography variant="body1" component="span">
+    <strong>Sommaire:</strong> {issue.fields.summary}
+  </Typography>
+
+  <Typography variant="body1" component="div" sx={{ width: '100%' }}>
+    <strong>Description:</strong>
+  </Typography>
+  <Typography variant="body1" sx={{ pl: 2 }}>
+   - {issue.fields.description} 
+  </Typography>
+
+  <Typography variant="body1" component="span">
+    <strong>Fichier:</strong> {issue.fields.fichier} {/* Assuming 'fichier' is correct */}
+  </Typography>
+
+  
+  {/* Add other details with similar structure */}
+</Stack>
         <div style={footerStyle}>
         <Typography variant="caption"> {issue.fields.customfield_10112}</Typography>
           <Typography variant="caption">Created at: {formatDate(issue.fields.created)}</Typography>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, CssBaseline, Grid } from '@mui/material';
+import { Box, CssBaseline } from '@mui/material';
 import ReclamationForm from './components/ReclamationForm';
 import AppAppBar from './components/topbar';
 
@@ -9,25 +9,13 @@ export default function Reclamation() {
 
   return (
     <Box 
-      sx={{ display: 'flex', flexGrow: 1, width: '100%', height: '100vh', alignItems: 'center' }}
+      sx={{ display: 'flex', flexGrow: 1, width: '100%', height: '100vh', alignItems: 'center',justifyContent: 'center' }}
     
       >
-      <CssBaseline />
-      <Box >
+      <CssBaseline /> 
+      <Box sx={{ width: '100%', maxWidth: 680 }}> 
         <AppAppBar />
-        <Grid container spacing={3} >
-          <Grid item xs={3}>
-         
-          </Grid>
-          <Grid item xs={8} sm={7} sx={{ alignItems: 'center', padding: 2 }}>
-            <ReclamationForm />
-          </Grid>
-          <Grid item xs sx={{ alignItems: 'center' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-
-            </Box>
-          </Grid>
-        </Grid>
+        <ReclamationForm /> 
       </Box>
     </Box>
   );

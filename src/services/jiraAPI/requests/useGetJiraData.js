@@ -3,7 +3,7 @@ import axios from 'axios';
 import {jiraAuth} from "../utils/jiraConst";
 
 
-function UseGetJiraData() {
+ function UseGetJiraData() {
     const [data, setData] = useState(null);
 
     const [error, setError] = useState(null);
