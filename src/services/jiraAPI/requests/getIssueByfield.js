@@ -27,7 +27,7 @@ function GetIssueByField() {
             console.log('Get GetIssueByField called');
             axios.request(config)
                 .then((response) => {
-                    console.log(JSON.stringify(response.data));
+                 
                     setDataIssueByField(response.data);
                 })
                 .catch((error) => {

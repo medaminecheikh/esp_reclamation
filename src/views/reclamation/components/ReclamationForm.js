@@ -150,10 +150,10 @@ function ReclamationForm() {
                 name="labels"
 
               >
-                <MenuItem value="motDePasseIncorrect">Mot de passe incorrect</MenuItem>
-                <MenuItem value="compteBloque">Compte bloqué</MenuItem>
-                <MenuItem value="connexionImpossible">Connexion impossible</MenuItem>
-                <MenuItem value="bugPage">Bug sur la page</MenuItem>
+                <MenuItem value="Mot de passe incorrect">Mot de passe incorrect</MenuItem>
+                <MenuItem value="Compte bloqué">Compte bloqué</MenuItem>
+                <MenuItem value="Connexion impossible">Connexion impossible</MenuItem>
+                <MenuItem value="Bug sur la page">Bug sur la page</MenuItem>
 
                 {/* Add options for problems here */}
               </Select>

@@ -10,7 +10,6 @@ export default function Reclamation() {
   return (
     <Box 
       sx={{ display: 'flex', flexGrow: 1, width: '100%', height: '100vh', alignItems: 'center',justifyContent: 'center' }}
-    
       >
       <CssBaseline /> 
       <Box sx={{ width: '100%', maxWidth: 680 }}> 
