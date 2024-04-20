@@ -74,7 +74,7 @@ function ListIssues({ dataIssueByField, errorIssueByField }) {
             >
           
     <Card key={issue.id } style={cardStyle}>
-      <CardContent spacing={5} >
+      <CardContent spacing={5} style={{ overflow: 'auto',maxHeight:'250px'}}>
         <div style={headerStyle}>
           <Typography variant="h4">{issue.fields.labels.join(', ')}</Typography>
           <div style={{display:'flex', justifyContent:'space-between'}}>
