@@ -9,6 +9,7 @@ import GetIssueByField from "../../services/jiraAPI/requests/getIssueByfield";
 
 function HistoriqueReq() {
     const { dataIssueByField, errorIssueByField } = GetIssueByField();
+     
    useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -52,11 +53,9 @@ function HistoriqueReq() {
                             Liste des Réclamations
                         </Typography>
                        <Box sx={{width: '100%',maxHeight: 'calc(100vh - 250px)',
-                            height: 'calc(100vh - 250px)',  overflow: 'auto',paddingTop:5}}>
+                            height: 'calc(100vh - 250px)',  overflow: 'auto',paddingTop:5}}>  
 
-                                
-
-                                <IssueProject/>
+                                <IssueProject myProjects={dataIssueByField} />
                             </Box>
                         <Box display="flex" justifyContent="center" >    
                         <Pagination
