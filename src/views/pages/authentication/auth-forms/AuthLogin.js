@@ -62,12 +62,19 @@ const FirebaseLogin = ({ ...others }) => {
           try {
             const response = await LoginRequest(values); // Call the LoginRequest function with form values
             console.log('Login successful:', response);
-           
+           // Store token in session storage
+            sessionStorage.setItem('token', response.token);
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
             }
-            
+            if (response.role === 'admin') {
+        history.push('/admin/dashboard'); // Navigate to admin route
+      } else if (response.role === 'user') {
+        history.push('/esp/reclamation'); // Navigate to esp route
+      } else {
+        // Navigate to some default route
+      }
           } catch (err) {
             console.error('Error logging in:', error);
             console.error(err);

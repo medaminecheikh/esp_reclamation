@@ -11,8 +11,7 @@ async function LoginRequest({Username,Password}) {
       };
      
       const response = await axios.post(url, config);
-          // Store token in session storage
-            sessionStorage.setItem('token', response.data.token);
+          
       return response.data;
     } catch (error) {
       console.error('Error Login:', error);
