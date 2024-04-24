@@ -150,12 +150,12 @@ function ReclamationForm() {
                 name="labels"
 
               >
-                <MenuItem value="Mot de passe incorrect">Mot de passe incorrect</MenuItem>
-                <MenuItem value="Compte bloqué">Compte bloqué</MenuItem>
-                <MenuItem value="Connexion impossible">Connexion impossible</MenuItem>
-                <MenuItem value="Bug sur la page">Bug sur la page</MenuItem>
+                <MenuItem value="MDP_incorrect">Mot de passe incorrect</MenuItem>
+                <MenuItem value="Compte_bloqué">Compte bloqué</MenuItem>
+                <MenuItem value="Connexion_impossible">Connexion impossible</MenuItem>
+                <MenuItem value="Bug_sur_la_page">Bug sur la page</MenuItem>
 
-                {/* Add options for problems here */}
+               
               </Select>
             </FormControl>
           </Grid>
@@ -215,8 +215,9 @@ function ReclamationForm() {
           fullWidth
           variant="contained"
           sx={{ mt: 2, mb: 2, bgcolor: 'error.dark' }}
-        >
-          Envoyer Réclamation
+          disabled={formik.isSubmitting} >
+            {formik.isSubmitting ? 'Envoi en cours...' : 'Envoyer Réclamation'} 
+
         </Button>
 
       </Box>

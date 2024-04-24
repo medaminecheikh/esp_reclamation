@@ -24,7 +24,7 @@ import { Formik } from 'formik';
 // project imports
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
-
+import LoginRequest from '../../../../services/backApi/LoginRequest';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -50,21 +50,26 @@ const FirebaseLogin = ({ ...others }) => {
     <>
       <Formik
         initialValues={{
-          email: 'info@esprit.tn',
-          password: '',
+          Username: 'info@esprit.tn',
+          Password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          Username: Yup.string().Username('Must be a valid email').max(255).required('Username is required'),
+          Password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
+            const response = await LoginRequest(values); // Call the LoginRequest function with form values
+            console.log('Login successful:', response);
+           
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
             }
+            
           } catch (err) {
+            console.error('Error logging in:', error);
             console.error(err);
             if (scriptedRef.current) {
               setStatus({ success: false });
@@ -76,34 +81,34 @@ const FirebaseLogin = ({ ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
-            <FormControl fullWidth error={Boolean(touched.email && errors.email)}
+            <FormControl fullWidth error={Boolean(touched.Username && errors.Username)}
                          sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">Email Address</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-Username-login">Email Address</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
-                value={values.email}
-                name="email"
+                value={values.Username}
+                name="Username"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label="Email Address"
                 inputProps={{}}
               />
-              {touched.email && errors.email && (
+              {touched.Username && errors.Username && (
                 <FormHelperText error id="standard-weight-helper-text-email-login">
-                  {errors.email}
+                  {errors.Username}
                 </FormHelperText>
               )}
             </FormControl>
 
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)}
+            <FormControl fullWidth error={Boolean(touched.Password && errors.Password)}
                          sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password-login"
-                type={showPassword ? 'text' : 'password'}
-                value={values.password}
-                name="password"
+                type={showPassword ? 'text' : 'Password'}
+                value={values.Password}
+                name="Password"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 endAdornment={
@@ -122,9 +127,9 @@ const FirebaseLogin = ({ ...others }) => {
                 label="Password"
                 inputProps={{}}
               />
-              {touched.password && errors.password && (
+              {touched.Password && errors.Password && (
                 <FormHelperText error id="standard-weight-helper-text-password-login">
-                  {errors.password}
+                  {errors.Password}
                 </FormHelperText>
               )}
             </FormControl>
