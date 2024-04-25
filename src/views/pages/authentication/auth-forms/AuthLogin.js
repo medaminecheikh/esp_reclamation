@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { useNavigate  } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -35,7 +35,7 @@ const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const [checked, setChecked] = useState(true);
-
+const navigate = useNavigate (); 
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -55,34 +55,36 @@ const FirebaseLogin = ({ ...others }) => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          Username: Yup.string().Username('Must be a valid email').max(255).required('Username is required'),
+          Username: Yup.string().email('Must be a valid email').max(255).required('Username is required'),
           Password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            const response = await LoginRequest(values); // Call the LoginRequest function with form values
+            console.log("values",values);
+            const response = await LoginRequest({ Username: values.Username, Password: values.Password }); // Call the LoginRequest function with form values
             console.log('Login successful:', response);
            // Store token in session storage
             sessionStorage.setItem('token', response.token);
+            sessionStorage.setItem('role', response.role);
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
             }
             if (response.role === 'admin') {
-        history.push('/admin/dashboard'); // Navigate to admin route
+        navigate('/admin/dashboard'); // Navigate to admin route
       } else if (response.role === 'user') {
-        history.push('/esp/reclamation'); // Navigate to esp route
+        navigate('/esp/reclamation'); // Navigate to esp route
       } else {
         // Navigate to some default route
       }
           } catch (err) {
             console.error('Error logging in:', error);
             console.error(err);
-            if (scriptedRef.current) {
+           
               setStatus({ success: false });
               setErrors({ submit: err.message });
               setSubmitting(false);
-            }
+            
           }
         }}
       >
@@ -90,7 +92,7 @@ const FirebaseLogin = ({ ...others }) => {
           <form noValidate onSubmit={handleSubmit} {...others}>
             <FormControl fullWidth error={Boolean(touched.Username && errors.Username)}
                          sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-Username-login">Email Address</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-login">Email Address</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
@@ -160,7 +162,7 @@ const FirebaseLogin = ({ ...others }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit"
+                <Button disableElevation disabled={isSubmitting} fullWidth size="large"  type="submit"
                         variant="contained" sx={{bgcolor:"#535252"}} color={'info'}  >
                   Sign in
                 </Button>
