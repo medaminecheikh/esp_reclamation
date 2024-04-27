@@ -50,7 +50,7 @@ const ProfileSection = () => {
   const handleLogout = async () => {
      localStorage.clear(); // Clear local storage
     sessionStorage.clear(); // Clear session storage (if used)
-    logoutUser
+    logoutUser();
     navigate('/login');
     console.log('Logout');
   };
