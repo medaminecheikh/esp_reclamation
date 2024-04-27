@@ -13,7 +13,7 @@ export default function ThemeRoutes() {
 
   return useRoutes([
     AuthenticationRoutes, // Always render authentication routes
-    user && user.role === 'admin' ? MainRoutes : '', // Render MainRoutes for admins
+    MainRoutes , // Render MainRoutes for admins  user && user.role === 'admin' ?
     user && user.role === 'user' ? ReclamationRoutes : '', // Render ReclamationRoutes for users
   ]);
   
