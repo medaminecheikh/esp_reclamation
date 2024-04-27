@@ -10,7 +10,7 @@ import { useUser } from '../context/UserContext'; // Import the context
 
 export default function ThemeRoutes() {
   const { user } = useUser();
-  console.log("user", user);
+
   return useRoutes([
     AuthenticationRoutes, // Always render authentication routes
     user && user.role === 'admin' ? MainRoutes : '', // Render MainRoutes for admins

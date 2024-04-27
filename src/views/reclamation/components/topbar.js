@@ -12,6 +12,7 @@ import {IconButton} from '@mui/material';
 import logo from '../../../assets/images/logo.svg';
 import {useNavigate} from 'react-router-dom';
 import {IconToiletPaper} from "@tabler/icons-react";
+import { useUser } from '../../../context/UserContext'; // Import the context
 
 const logoStyle = {
     width: '140px',
@@ -23,12 +24,12 @@ function AppAppBar() {
     const handleReload = () => {
         window.location.reload();
     };
-
+    const { logoutUser } = useUser();
+    const { user } = useUser();
     const navigate = useNavigate();
  const handleLogout = async () => {
-     localStorage.clear(); // Clear local storage
-    sessionStorage.clear(); // Clear session storage (if used)
     
+    logoutUser
     navigate('/login/');
     console.log('Logout');
   };
@@ -38,8 +39,7 @@ function AppAppBar() {
     const navigateToRec = () => {
         navigate('/esp/reclamation/'); // Redirect to the specified URL
     };
- 
-
+   
     return (
         <div>
             <AppBar
@@ -103,9 +103,9 @@ function AppAppBar() {
                                     <Typography variant="h4" color="#C62828" sx={{marginRight: 1}}>
                                         <i> Espace Réclamation</i>
                                     </Typography>
-                                    <Typography variant="body2" color="text.primary" sx={{overflow: 1}}>
-                                        mahmoudss.balour@esprit.tn
-                                    </Typography>
+                                    {user ? <Typography variant="body2" color="text.primary" sx={{overflow: 1}}>
+                                    {user?.username}
+                                    </Typography> : ''}
                                 </MenuItem>
 
                                 <MenuItem

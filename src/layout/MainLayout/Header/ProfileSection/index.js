@@ -29,6 +29,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import User1 from 'assets/images/users/user-round.svg';
+import { useUser } from "../../../../context/UserContext";
 // assets
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
 
@@ -38,7 +39,8 @@ const ProfileSection = () => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
-
+  const { user, logoutUser } = useUser();
+  
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   /**
@@ -48,7 +50,7 @@ const ProfileSection = () => {
   const handleLogout = async () => {
      localStorage.clear(); // Clear local storage
     sessionStorage.clear(); // Clear session storage (if used)
-    
+    logoutUser
     navigate('/login');
     console.log('Logout');
   };
@@ -151,7 +153,7 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Johne Doe</Typography>
+                        <Typography variant="h4">{user?.username}</Typography>
 
                       </Stack>
                       <Typography variant="subtitle2">Project Admin</Typography>

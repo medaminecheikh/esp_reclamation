@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import  LoginRequest from "../services/backApi/LoginRequest";
+
 const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
@@ -14,9 +15,14 @@ export const UserProvider = ({ children }) => {
             setUser(null);
         }
     };
-
+    const logoutUser = () => {
+        localStorage.clear(); // Clear local storage
+        sessionStorage.clear(); // Clear session storage (if used)
+        setUser(null);  // Clear user data in context
+      
+    };
     return (
-        <UserContext.Provider value={{ user, loginUser }}>
+        <UserContext.Provider value={{ user, loginUser, logoutUser }}>
             {children}
         </UserContext.Provider>
     );

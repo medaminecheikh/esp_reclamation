@@ -37,8 +37,10 @@ const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const [checked, setChecked] = useState(true);
-const navigate = useNavigate (); 
-const { loginUser } = useUser();
+  const navigate = useNavigate (); 
+  
+  const { loginUser } = useUser();
+  
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -67,8 +69,7 @@ const { loginUser } = useUser();
             console.log('Login successful:', response);
            // Store token in session storage
            await loginUser( values.Username, values.Password );
-            sessionStorage.setItem('token', response.token);
-            sessionStorage.setItem('role', response.role);
+            
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
