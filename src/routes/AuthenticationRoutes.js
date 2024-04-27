@@ -4,8 +4,7 @@ import { lazy } from 'react';
 import Loadable from 'ui-component/Loadable';
 import MinimalLayout from 'layout/MinimalLayout';
 import { Navigate } from 'react-router';
-import Reclamation from '../views/reclamation/reclamation';
-import HistoriqueReq from "../views/historiqueReq/HistoriqueReq";
+
 
 // login option 3 routing
 const AuthLogin3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Login3')));
@@ -29,18 +28,7 @@ const AuthenticationRoutes = {
       path: '/register',
       element: <AuthRegister3 />
     },
-    {
-      path: 'esp',
-      children: [
-        {
-          path: 'reclamation',
-          element: <Reclamation />
-        },{
-          path: 'historique',
-          element: <HistoriqueReq />
-        }
-      ]
-    },
+   
     {
       path: '*',
       element: <Navigate to="/login" replace={true} />

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-
+import {useEffect} from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
@@ -18,6 +18,14 @@ import AuthFooter from 'ui-component/cards/AuthFooter';
 const Login = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+ useEffect(() => {
+        const resetData = async () => {
+          localStorage.clear(); // Clear local storage
+    sessionStorage.clear(); // Clear session storage (if used)
+        };
+
+        resetData();
+    }, []); // Re-run when these dependencies change
 
   return (
     <AuthWrapper1 >

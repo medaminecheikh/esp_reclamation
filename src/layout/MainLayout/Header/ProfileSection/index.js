@@ -29,7 +29,6 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import User1 from 'assets/images/users/user-round.svg';
-
 // assets
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
 
@@ -47,6 +46,10 @@ const ProfileSection = () => {
    * */
   const anchorRef = useRef(null);
   const handleLogout = async () => {
+     localStorage.clear(); // Clear local storage
+    sessionStorage.clear(); // Clear session storage (if used)
+    
+    navigate('/login');
     console.log('Logout');
   };
 

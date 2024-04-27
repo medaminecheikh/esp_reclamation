@@ -25,6 +25,8 @@ import { Formik } from 'formik';
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import LoginRequest from '../../../../services/backApi/LoginRequest';
+import { useUser } from '../../../../context/UserContext';
+
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -36,7 +38,7 @@ const FirebaseLogin = ({ ...others }) => {
   const scriptedRef = useScriptRef();
   const [checked, setChecked] = useState(true);
 const navigate = useNavigate (); 
-
+const { loginUser } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -64,6 +66,7 @@ const navigate = useNavigate ();
             const response = await LoginRequest({ Username: values.Username, Password: values.Password }); // Call the LoginRequest function with form values
             console.log('Login successful:', response);
            // Store token in session storage
+           await loginUser( values.Username, values.Password );
             sessionStorage.setItem('token', response.token);
             sessionStorage.setItem('role', response.role);
             if (scriptedRef.current) {

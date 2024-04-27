@@ -25,16 +25,20 @@ function AppAppBar() {
     };
 
     const navigate = useNavigate();
-
+ const handleLogout = async () => {
+     localStorage.clear(); // Clear local storage
+    sessionStorage.clear(); // Clear session storage (if used)
+    
+    navigate('/login/');
+    console.log('Logout');
+  };
     const navigateToLogs = () => {
         navigate('/esp/historique/'); // Redirect to the specified URL
     };
     const navigateToRec = () => {
         navigate('/esp/reclamation/'); // Redirect to the specified URL
     };
-    const navigateToLogin = () => {
-        navigate('/login/'); // Redirect to the specified URL
-    };
+ 
 
     return (
         <div>
@@ -132,7 +136,7 @@ function AppAppBar() {
                             }}
                         >
                             <Button size="small" color="info" sx={{bgcolor: "#535252"}}
-                                    onClick={navigateToLogin} variant="contained" endIcon={<Logout/>}>Logout</Button>
+                                    onClick={handleLogout} variant="contained" endIcon={<Logout/>}>Logout</Button>
                         </Box>
 
                     </Toolbar>
