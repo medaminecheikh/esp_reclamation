@@ -1,9 +1,8 @@
 import axios from 'axios'
-import useUser from '../../../context/UserContext'
 
-async function UpdateUser({userUpdate}) {
+async function UpdateUser({userUpdate, user}) {
     try{
-        const { user } = useUser();
+
     
         const url = `http://localhost:8086/api/user/update`;
         const data = {userUpdate}; // Since you're not sending any additional data, an empty object is sufficient
