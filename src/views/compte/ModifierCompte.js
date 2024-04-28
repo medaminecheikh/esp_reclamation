@@ -60,14 +60,17 @@ function ModifierCompte (){
       <MainCard title="Modifier Compte" sx={{  flexGrow: 1 }}>
 
         <Box  boxShadow={2} padding={2} sx={{  flexGrow: 1, margin:-3 }}> 
-        <Grid justifyContent={'center'} alignContent={'space-around'} container>
+        <Grid justifyContent={'space-around'} alignItems={'flex-start'} container>
         
   
-        <Grid item xs={5} maxHeight={"250px"}  display={"flex"} direction="column" justifyContent={'center'} alignItems={'center'}> 
+        <Grid item xs={4} sx={{
+         
+           
+        }}>
 
             <UpdateForm/>
        </Grid>
-
+        
         <Grid item xs={7}> <DataTableUser Users={ListUsers} onSelect={handleUserSelect}/></Grid>
         </Grid>  
          </Box>
