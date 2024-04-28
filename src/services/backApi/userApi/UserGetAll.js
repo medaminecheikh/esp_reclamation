@@ -1,9 +1,7 @@
 import axios from 'axios'
-import useUser from '../../../context/UserContext'
 
-async function UserGetAll() {
+async function UserGetAll({user}) {
 try{
-    const { user } = useUser();
 
     const url = `http://localhost:8086/api/user/getAll`;
     const data = {}; // Since you're not sending any additional data, an empty object is sufficient

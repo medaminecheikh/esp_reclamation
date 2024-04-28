@@ -1,9 +1,8 @@
 import axios from 'axios'
-import useUser from '../../../context/UserContext'
 
-async function GetUserId({id}) {
+async function GetUserId({id, user}) {
     try {
-        const { user } = useUser();
+
 
         const url = `http://localhost:8086/api/user/getBy/${id}`; // Assuming this is the endpoint to delete a user by ID
 

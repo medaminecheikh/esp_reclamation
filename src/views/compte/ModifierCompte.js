@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 // material-ui
 import { Typography } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 
-class ModifierCompte extends Component {
-  render() {
+function ModifierCompte (){
+
     return (
 
       <MainCard title="ModifierCompte">
@@ -22,7 +22,7 @@ class ModifierCompte extends Component {
       </MainCard>
 
     );
-  }
+ 
 }
 
 export default ModifierCompte;

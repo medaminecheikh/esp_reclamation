@@ -1,10 +1,9 @@
 import axios from 'axios'
-import useUser from '../../../context/UserContext'
 
-async function AddUser({addUser}) {
+async function AddUser({addUser, user}) {
     try{
-        const { user } = useUser();
-    
+     
+        
         const url = `http://localhost:8086/api/user/add`;
         const data = {addUser}; // Since you're not sending any additional data, an empty object is sufficient
     

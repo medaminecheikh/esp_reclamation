@@ -1,103 +1,170 @@
-import React, { Component } from 'react';
+import React, {  useState } from 'react';
 // material-ui
-import { Grid, Typography, Box, Button, FormControl, InputLabel, Select, MenuItem, TextField } from '@mui/material';
-
+import { Grid, Box, Button, FormControl, InputLabel, Select, MenuItem, TextField,Snackbar, Alert } from '@mui/material';
+import * as Yup from 'yup';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import AnimateButton from 'ui-component/extended/AnimateButton';
-class CreerCompte extends Component {
+import { Field, Form, Formik } from 'formik';
+import AddUser from 'services/backApi/userApi/AddUser';
+import {useUser} from '../../context/UserContext';
 
+const SignupSchema = Yup.object().shape({
+  username: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().required('Required').min(8, 'Password is too short - should be 8 chars minimum.'),
+  confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
+  status: Yup.string().required('Required'),
+  role: Yup.string().required('Required')
+});
 
+function CreerCompte (){
 
-  render() {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const { user } = useUser();
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
+      const response = await AddUser(values, user);
+      if (response.status === 200) {
+        setOpenSnackbar(true);
+        setSnackbarMessage("User added successfully!");
+        setSnackbarSeverity("success");
+        resetForm();
+      }
+    } catch (error) {
+      setOpenSnackbar(true);
+      setSnackbarMessage("Failed to add user. Please try again.");
+      setSnackbarSeverity("error");
+      console.error('Error adding user:', error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+const handleCloseSnackbar = () => {
+  setOpenSnackbar(false);
+};
+
+  
     return (
-      <MainCard title="Créer Compte">
+      <MainCard title="Nouveau Compte">
+      <Formik
+        initialValues={{
+          username: '',
+          password: '',
+          confirm: '',
+          status: 'true',
+          role: 'user'
+        }}
+        validationSchema={SignupSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ errors, touched, isSubmitting }) => (
+          <Form>
+            <Box sx={{  flexGrow: 1 }}>
+              <Grid container spacing={3} marginTop={1} sx={{ alignItems: 'center', justifyContent: 'space-evenly' }}>
+                <Grid item xs={12} sm={6} md={4}>
+                  <FormControl fullWidth>
+                    <Field as={TextField}
+                      name="username"
+                      type="email"
+                      label="Email"
+                      variant='outlined'
+                      error={touched.username && Boolean(errors.username)}
+                    
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <FormControl fullWidth>
+                    <InputLabel id="enable-label">Status</InputLabel>
+                    <Field
+                      as={Select}
+                      name="status"
+                      labelId="enable-label"
+                      id="enable-simple-select"
+                      label="Enabled"
+                      error={touched.status && Boolean(errors.status)}
+                      
+                    >
+                      <MenuItem value="true">Activer</MenuItem>
+                      <MenuItem value="false">Désactiver</MenuItem>
+                    </Field>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                    <Field
+                      as={Select}
+                      name="role"
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Role"
+                    >
+                      <MenuItem value="user">User</MenuItem>
+                      <MenuItem value="admin">Admin</MenuItem>
+                    </Field>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} marginTop={1}>
+                  <FormControl fullWidth>
+                    <Field as={TextField}
+                      name="password"
+                      type="password"
+                      label="Password"
+                      variant='outlined'
+                      error={touched.password && Boolean(errors.password)}
+                     
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} marginTop={1}>
+                  <FormControl fullWidth>
+                    <Field as={TextField}
+                      name="confirm"
+                      type="password"
+                      label="Confirme Password"
+                      variant='outlined'
+                      error={touched.confirm && Boolean(errors.confirm)}
+                     
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
 
-    <Box component="form" noValidate  sx={{display:'flex'}}>
-        <Grid container spacing={3} xs={8}
-          sx={{  alignItems: 'center',
-          justifyContent: 'space-evenly' }}> 
-          <Grid item xs={4}  >
-           <FormControl fullWidth>
+              
 
-           <TextField
-              name="username"
-              required
-              fullWidth
-              id="username"
-              label="Email"
-               />
-           </FormControl>
-          </Grid>
-          <Grid item xs={3}  >
-          <FormControl fullWidth>
-        <InputLabel id="enable-label">Status</InputLabel>
-        <Select
-          labelId="enable-label"
-          id="enable-simple-select"
-          label="Enabled"
-          
-        >
-          <MenuItem value="true">Activer</MenuItem>
-          <MenuItem value="false">Désactiver</MenuItem>
-        
-        </Select>
-      </FormControl>
-          </Grid>
-          <Grid item xs={3}  >
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Role</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-        
-          label="Role"
-          
-        >
-          <MenuItem value="user">User</MenuItem>
-          <MenuItem value="admin">Admin</MenuItem>
-          
-        </Select>
-      </FormControl>
-          </Grid>
-
-          <Grid item xs={4}  >
-          sssssssssssss
-          </Grid>
-          <Grid item xs={4}  >
-          sssssssssssss
-          </Grid>
-        </Grid>
-
-          <Grid container xs={1}> </Grid>
-        
-          <Grid container  xs={4} spacing={3} minHeight={"200px"} direction="row" justifyContent="center" alignItems="center">
-            <Grid item xs={6}>  
-              <AnimateButton>
-                <Button disableElevation  fullWidth size="small" type="submit" variant="contained" color='secondary'>
-                  Save 
-                </Button>
-              </AnimateButton>
-            </Grid>  
-            <Grid  item xs={6}  > 
-            <AnimateButton>
-                <Button disableElevation fullWidth  size="small" type="button" variant="contained" color="inherit">
-                  Cancel
-                </Button>
-              </AnimateButton>
-          </Grid>
-       </Grid>
-    </Box>
-      
-        <Typography variant="body2">
-          Lorem ipsum dolor sit amen, consenter nipissing eli, sed do elusion tempos incident ut laborers et doolie magna alissa. Ut enif ad
-          minim venice, quin nostrum exercitation illampu laborings nisi ut liquid ex ea commons construal. Duos aube grue dolor in reprehended
-          in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in culpa qui officiate
-          descent molls anim id est labours.
-        </Typography>
+              <Grid container spacing={3} marginTop={4} direction="row" justifyContent="center" alignItems="center">
+                <Grid item xs={4}>
+                  <AnimateButton>
+                    <Button disabled={isSubmitting}   disableElevation fullWidth size="small" type="submit" variant="contained" color='secondary'>
+                      Save
+                    </Button>
+                  </AnimateButton>
+                </Grid>
+                <Grid item xs={2}>
+                  <AnimateButton>
+                    <Button disabled={isSubmitting}  disableElevation fullWidth size="small" type="reset" variant="contained" color="inherit">
+                      Cancel
+                    </Button>
+                  </AnimateButton>
+                </Grid>
+              </Grid>
+            </Box>
+            <Snackbar  open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                  {snackbarMessage}
+                </Alert>
+              </Snackbar>
+          </Form>
+        )}
+      </Formik>
       </MainCard>
     );
-  }
+  
 }
 
 export default CreerCompte;
