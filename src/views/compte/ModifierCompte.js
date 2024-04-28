@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 // material-ui
-import { Alert, Snackbar, Typography } from '@mui/material';
+import { Alert, Box, Grid, Snackbar } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { useUser } from 'context/UserContext';
 import UserGetAll from 'services/backApi/userApi/UserGetAll';
+import DataTableUser from './compo/DataTableUser';
 
 function ModifierCompte (){
   const { user } = useUser();
@@ -23,8 +24,8 @@ function ModifierCompte (){
       try {
         const response = await UserGetAll(user);
         if (response.status === 200) {
-          setListUsers(response.data); // Assuming response contains data field with user list
-          console.log(response.data); // Logging the fetched data
+          setListUsers(response); // Assuming response contains data field with user list
+          console.log(response); // Logging the fetched data
         } else {
           setOpenSnackbar(true);
           setSnackbarMessage("Failed to fetch users. Please try again.");
@@ -45,18 +46,18 @@ function ModifierCompte (){
     return (
 
       <MainCard title="Modifier Compte">
-        <Typography variant="body2">
-         {ListUsers}
-          {user ? user.username : " user not found"}
-          Lorem ipsum dolor sit amen, consenter nipissing eli, sed do elusion tempos incident ut laborers et doolie
-          magna alissa. Ut enif ad
-          minim venice, quin nostrum exercitation illampu laborings nisi ut liquid ex ea commons construal. Duos aube
-          grue dolor in reprehended
-          in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in
-          culpa qui officiate
-          descent molls anim id est labours.
-        </Typography>
-        <Snackbar  open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}
+
+        <Box  sx={{  flexGrow: 1 }}> 
+        <Grid justifyContent={'center'} alignContent={'space-around'} container>
+        
+        <Grid item xs={4}> fffff</Grid>
+
+        <Grid item xs={7}> <DataTableUser Users={ListUsers}/></Grid>
+        </Grid>  
+         </Box>
+      
+       
+        <Snackbar  open={openSnackbar} autoHideDuration={10000} onClose={handleCloseSnackbar}
  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
      <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
        {snackbarMessage}
