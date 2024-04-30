@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react';
 // material-ui
-import { Alert, Box, Grid, Snackbar } from '@mui/material';
+import { Alert, Box, Grid, Snackbar, Typography } from '@mui/material';
 
 // project imports
-import { useUser } from 'context/UserContext';
 import UserGetAll from 'services/backApi/userApi/UserGetAll';
 import DataTableUser from './compo/DataTableUser';
 import UpdateForm from './compo/UpdateForm';
 
 
-function ModifierCompte (props){
-  const { user } = useUser();
+function ModifierCompte (){
+  
   const [ListUsers, setListUsers] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
   const [selectedUser, setSelectedUser] = useState(null);
-      console.log("props {} and {}",props ,user);
-  const handleUserSelect = (userS) => {
-    console.log( "userS", userS )
-
-    setSelectedUser(userS);
-
-    console.log(selectedUser);
+  const [selectedUserIndex, setSelectedUserIndex] = useState(null);
+  const handleUserSelect = (user, index) => {
+    setSelectedUser(user);
+    setSelectedUserIndex(index); // Save the index of the selected user
+    
   };
 
+  const handleFormReset = () => {
+    setSelectedUser(null);
+    setSelectedUserIndex(null); // Reset the selected index when the form is reset
+  };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -66,18 +67,17 @@ function ModifierCompte (props){
      
 
         <Box  boxShadow={2} padding={3} sx={{  flexGrow: 1,  bgcolor:'white' }}> 
-        <Grid justifyContent={'space-between'} alignItems={'flex-start'} container>
+        <Grid justifyContent={'center'} alignItems={'flex-start'} container>
+        <Typography variant='h2' mt={2}  sx={{textDecorationColor:'info'}} > Liste des Utilisateurs</Typography>
         
-  
-        <Grid item xs={4} sx={{
-         marginTop:'20px'
-           
-        }}  >
+        <Grid item xs={12} > <DataTableUser Users={ListUsers} onSelect={handleUserSelect} selectedRowIndex={selectedUserIndex}/></Grid>
+        
+        <Grid item xs={12} >
 
-            <UpdateForm  user={user}/>
+            <UpdateForm  initialUser={selectedUser} onFormReset={handleFormReset}/>
        </Grid>
         
-        <Grid item xs={6}> <DataTableUser Users={ListUsers} onSelect={handleUserSelect}/></Grid>
+       
         </Grid>  
         <Snackbar  open={openSnackbar} autoHideDuration={10000} onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>

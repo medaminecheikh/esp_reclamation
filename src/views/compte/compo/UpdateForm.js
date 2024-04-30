@@ -5,15 +5,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import UpdateUser from 'services/backApi/userApi/UpdateUser';
 
-function UpdateForm({user}) {
+function UpdateForm({initialUser, onFormReset  }) {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-
+      
 
   const validationSchema = Yup.object({
     username: Yup.string().notRequired(),
@@ -23,11 +23,27 @@ function UpdateForm({user}) {
   });
   const handleCancel = () => {
     formik.resetForm();
+    onFormReset(); 
   };
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+
+
+  useEffect(() => {
+    console.log('useEffect called');
+    if (initialUser) {
+      formik.setValues({
+        id: initialUser.id || '',
+        username: initialUser.username || '',
+        password: '',
+        role: initialUser.role?.name || '',
+        enabled: initialUser.enabled?.toString() || '',
+      });
+    }
+  }, [initialUser]);
+  
   
   const formik = useFormik({
     initialValues: {
@@ -41,7 +57,7 @@ function UpdateForm({user}) {
     onSubmit: async (values, { setSubmitting, resetForm }) => {
      try{
       console.log(values);
-      const response = await UpdateUser(values, user);
+      const response = await UpdateUser(values);
       if (response.status === 200) {
         setOpenSnackbar(true);
         setSnackbarMessage("User Updated successfully!");
@@ -66,14 +82,14 @@ function UpdateForm({user}) {
         <Grid item xs={12}>
           <Stack spacing={4}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Typography variant="h2">Utilisateur Choisi</Typography>
+              <Typography variant="h3">Information du Compte {initialUser?.username}</Typography>
               <IconButton aria-label="delete" size="meduim" color="error">
                 <DeleteIcon fontSize="inherit" />
               </IconButton>
             </Stack>
             <Divider style={{ marginTop: '10px' }} />
             {/* Email and Password fields */}
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row" maxWidth={'60%'} justifyContent={'space-evenly'} spacing={2}>
               <TextField
                 label="Email"
                 id="username"
@@ -90,10 +106,7 @@ function UpdateForm({user}) {
                 {...formik.getFieldProps('password')}
             
               />
-            </Stack>
 
-            {/* Role and enabled selects */}
-            <Stack direction="row" spacing={2} justifyContent="space-evenly">
               <FormControl variant="filled" sx={{ minWidth: 150 }}>
                 <InputLabel id="role-label">Role</InputLabel>
                 <Select
@@ -125,9 +138,11 @@ function UpdateForm({user}) {
               </FormControl>
             </Stack>
 
+         
+
             {/* Save and Cancel buttons */}
             <Stack direction="row" style={{ marginTop: '60px', width: '100%' }} justifyContent="flex-end" spacing={2}>
-              <Grid item xs={5}>
+              <Grid item xs={4}>
               <AnimateButton>
                 <Button
                   endIcon={<DoneIcon /> }
@@ -139,10 +154,11 @@ function UpdateForm({user}) {
                   variant="contained"
                   sx={{ bgcolor: green[700] }}
                 >
-                  Save
+                  Valider Modification
                 </Button>
               </AnimateButton>
               </Grid>
+              <Grid item xs={2}>
               <AnimateButton>
                 <Button
                   disableElevation
@@ -156,6 +172,7 @@ function UpdateForm({user}) {
                   Cancel
                 </Button>
               </AnimateButton>
+              </Grid>
             </Stack>
           </Stack>
         </Grid>

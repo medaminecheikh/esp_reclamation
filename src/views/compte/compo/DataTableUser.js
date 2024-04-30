@@ -12,9 +12,11 @@ import { green, grey } from '@mui/material/colors';
 
 
 
-function DataTableUser( props) {
+function DataTableUser( { Users, onSelect, selectedRowIndex }) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
       };
@@ -23,17 +25,21 @@ function DataTableUser( props) {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
       };
+      const handleUserSelect = (user, index) => {
+        onSelect(user, index);
+      };
 
-  console.log("props data",props)
+    
+  
   return (
 
-    <div >
-      <TableContainer component={Paper} style={{ maxHeight: 400 }}>
-      <Table stickyHeader  sx={{ maxWidth: 650 }} size="small" aria-label="simple table">
+    <div style={{flexGrow:1 ,alignItems:'center'}} >
+      <TableContainer component={Paper} style={{ maxHeight: 400 }} >
+      <Table stickyHeader  size="small" aria-label="simple table">
         <TableHead>
-        <TableRow>
+        <TableRow >
              <TableCell align="center" colSpan={3}><TextField id="standard-basic" label="Search by Email" variant="standard" /></TableCell>
-             <TableCell align="center" sx={{ marginBottom:'30px'}} colSpan={3}> <TextField id="Role-basic" label="Search by Role" variant="standard" /></TableCell>
+             <TableCell align="center"  colSpan={3}> <TextField id="Role-basic" label="Search by Role" variant="standard" /></TableCell>
         </TableRow >
           <TableRow>
             <TableCell>Email</TableCell>
@@ -44,8 +50,11 @@ function DataTableUser( props) {
           </TableRow>
         </TableHead>
         <TableBody  style={{overflow:'auto'}}> 
-        {props.Users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
+        {Users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
             <TableRow
+            onDoubleClick={() => handleUserSelect(row, index)}
+            style={{ cursor: 'pointer', backgroundColor: selectedRowIndex  === index ? '#f0f0f0' : 'transparent' }} // Change background color of selected row
+
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
@@ -67,7 +76,7 @@ function DataTableUser( props) {
     <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.Users.length}
+          count={Users.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
