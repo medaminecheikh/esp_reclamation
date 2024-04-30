@@ -10,11 +10,17 @@ import { useUser } from '../context/UserContext'; // Import the context
 
 export default function ThemeRoutes() {
   const { user } = useUser();
+  const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
 
+  // Determine the user role from either context or session storage
+  const userRole = user?.role || storedUserData?.role;
+
+  // Determine if the user is authenticated from either context or session storage
+  const isAuthenticated = !!user || !!storedUserData;
+ 
   return useRoutes([
     AuthenticationRoutes, // Always render authentication routes
-    MainRoutes , // Render MainRoutes for admins  user && user.role === 'admin' ?
-    user && user.role === 'user' ? ReclamationRoutes : '', // Render ReclamationRoutes for users
-  ]);
+    isAuthenticated && userRole === 'admin' ? MainRoutes : '',
+    isAuthenticated && userRole === 'user' ? ReclamationRoutes : '',  ]);
   
 }

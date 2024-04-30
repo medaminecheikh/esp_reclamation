@@ -3,14 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Box, Grid, Snackbar } from '@mui/material';
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
 import { useUser } from 'context/UserContext';
 import UserGetAll from 'services/backApi/userApi/UserGetAll';
 import DataTableUser from './compo/DataTableUser';
 import UpdateForm from './compo/UpdateForm';
 
 
-function ModifierCompte (){
+function ModifierCompte (props){
   const { user } = useUser();
   const [ListUsers, setListUsers] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -18,7 +17,7 @@ function ModifierCompte (){
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
   const [selectedUser, setSelectedUser] = useState(null);
-
+      console.log("props {} and {}",props ,user);
   const handleUserSelect = (userS) => {
     console.log( "userS", userS )
 
@@ -34,20 +33,27 @@ function ModifierCompte (){
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await UserGetAll(user);
-        if (response.status === 200) {
-          setListUsers(response); // Assuming response contains data field with user list
-          console.log(response); // Logging the fetched data
-        } else {
-          setOpenSnackbar(true);
-          setSnackbarMessage("Failed to fetch users. Please try again.");
-          setSnackbarSeverity("error");
-        }
+        
+        
+       
+          const response = await UserGetAll();
+          if (response) {
+            setListUsers(response); // Assuming response contains data field with user list
+             // Logging the fetched data
+          } else {
+            console.error('Error fetching users:', response);
+            setOpenSnackbar(true);
+            setSnackbarMessage("Failed to fetch users. Please try again.");
+            setSnackbarSeverity("error");
+          }
+        
+      
       } catch (error) {
         setOpenSnackbar(true);
         setSnackbarMessage("Failed to fetch users. Please try again.");
         setSnackbarSeverity("error");
         console.error('Error fetching users:', error);
+        console.error('Error fetching users:', response);
       }
     };
   
@@ -57,32 +63,33 @@ function ModifierCompte (){
   
     return (
 
-      <MainCard title="Modifier Compte" sx={{  flexGrow: 1 }}>
+     
 
-        <Box  boxShadow={2} padding={2} sx={{  flexGrow: 1, margin:-3 }}> 
-        <Grid justifyContent={'space-around'} alignItems={'flex-start'} container>
+        <Box  boxShadow={2} padding={3} sx={{  flexGrow: 1,  bgcolor:'white' }}> 
+        <Grid justifyContent={'space-between'} alignItems={'flex-start'} container>
         
   
         <Grid item xs={4} sx={{
-         
+         marginTop:'20px'
            
-        }}>
+        }}  >
 
-            <UpdateForm/>
+            <UpdateForm  user={user}/>
        </Grid>
         
-        <Grid item xs={7}> <DataTableUser Users={ListUsers} onSelect={handleUserSelect}/></Grid>
+        <Grid item xs={6}> <DataTableUser Users={ListUsers} onSelect={handleUserSelect}/></Grid>
         </Grid>  
-         </Box>
-      
-       
         <Snackbar  open={openSnackbar} autoHideDuration={10000} onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
      <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
        {snackbarMessage}
      </Alert>
    </Snackbar>
-      </MainCard>
+        </Box>
+      
+       
+     
+    
  
     );
  

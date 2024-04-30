@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-async function AddUser({addUser, user}) {
+async function AddUser({addUser}) {
     try{
-     
+      const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
+
         
         const url = `http://localhost:8086/api/user/add`;
         const data = {addUser}; // Since you're not sending any additional data, an empty object is sufficient
@@ -13,7 +14,7 @@ async function AddUser({addUser, user}) {
           maxBodyLength: Infinity,
           url: `${url}`, 
           headers: {
-            Authorization: `Bearer ${user.token}` // Include the bearer token in the Authorization header
+            Authorization: `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
         },
           data: data,
         };

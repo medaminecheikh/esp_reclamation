@@ -24,12 +24,13 @@ function AppAppBar() {
     const handleReload = () => {
         window.location.reload();
     };
+    const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
     const { logoutUser } = useUser();
-    const { user } = useUser();
+   
     const navigate = useNavigate();
  const handleLogout = async () => {
     
-    logoutUser
+    logoutUser();
     navigate('/login/');
     console.log('Logout');
   };
@@ -103,8 +104,8 @@ function AppAppBar() {
                                     <Typography variant="h4" color="#C62828" sx={{marginRight: 1}}>
                                         <i> Espace Réclamation</i>
                                     </Typography>
-                                    {user ? <Typography variant="body2" color="text.primary" sx={{overflow: 1}}>
-                                    {user?.username}
+                                    {storedUserData ? <Typography variant="body2" color="text.primary" sx={{overflow: 1}}>
+                                    {storedUserData?.username}
                                     </Typography> : ''}
                                 </MenuItem>
 

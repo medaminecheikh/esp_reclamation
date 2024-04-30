@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
         try {
             const userData = await LoginRequest({ Username, Password });
             setUser(userData);  // Store user data in context
+            sessionStorage.setItem('userData', JSON.stringify(userData)); 
         } catch (error) {
             console.error('Login failed:', error);
             setUser(null);

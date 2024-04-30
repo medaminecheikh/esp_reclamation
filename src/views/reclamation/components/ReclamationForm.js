@@ -22,7 +22,7 @@ import PostAttachIssue from "../../../services/jiraAPI/requests/postAttachIssue"
 const initialValues = {
   summary: '',
   projectKey: '',
-  reporter: 'mahmoudi.API@esprit.tn',
+  reporter: '',
   labels: '',
   priority: '3',
   description: '',
@@ -44,6 +44,7 @@ const validationSchema = Yup.object({
 });
 
 function ReclamationForm() {
+  const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
   const { data, error } = UseGetJiraData();
   const formik = useFormik({
     initialValues,
@@ -56,7 +57,7 @@ function ReclamationForm() {
             summary: values.summary,
             description: values.description,
             issuetype: { name: 'Bug' }, // or any other issue type you want
-            customfield_10112:  values.reporter  ,
+            customfield_10112:  storedUserData.username  ,
             labels: [values.labels],
             priority: { id: values.priority }
             // Additional fields as needed

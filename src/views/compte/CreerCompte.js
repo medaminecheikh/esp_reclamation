@@ -13,7 +13,7 @@ const SignupSchema = Yup.object().shape({
   username: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().required('Required').min(8, 'Password is too short - should be 8 chars minimum.'),
   confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
-  status: Yup.string().required('Required'),
+  enabled: Yup.string().required('Required'),
   role: Yup.string().required('Required')
 });
 
@@ -54,7 +54,7 @@ const handleCloseSnackbar = () => {
           username: '',
           password: '',
           confirm: '',
-          status: 'true',
+          enabled: 'true',
           role: 'user'
         }}
         validationSchema={SignupSchema}
@@ -81,11 +81,11 @@ const handleCloseSnackbar = () => {
                     <InputLabel id="enable-label">Status</InputLabel>
                     <Field
                       as={Select}
-                      name="status"
+                      name="enabled"
                       labelId="enable-label"
                       id="enable-simple-select"
                       label="Enabled"
-                      error={touched.status && Boolean(errors.status)}
+                      error={touched.enabled && Boolean(errors.enabled)}
                       
                     >
                       <MenuItem value="true">Activer</MenuItem>

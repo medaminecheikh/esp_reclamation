@@ -7,7 +7,7 @@ function GetIssueByField() {
     const [dataIssueByField, setDataIssueByField] = useState(null);
 
     const [errorIssueByField, setErrorIssueByField] = useState(null);
-
+    const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
     const JIRA_USERNAME = jiraAuth.username;
     const JIRA_PASSWORD = jiraAuth.password;
     let config = {
@@ -19,7 +19,7 @@ function GetIssueByField() {
             , 'Content-Type': 'application/json'
         },
                 params: { // Pass fieldValue as a parameter in the request
-                    jql: `Sendermail ~ "mahmoudi.API@esprit.tn"` // Modify to use fieldValue in JQL
+                    jql: `Sendermail ~ ${storedUserData.username}` // Modify to use fieldValue in JQL
                 }
     };
     useEffect(() => {
