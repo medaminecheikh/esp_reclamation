@@ -13,12 +13,13 @@ import DoneIcon from '@mui/icons-material/Done';
 
 function DataTableUser( { Users, onSelect, selectedRowIndex }) {
 
-  const styles = {
+  const stylechip = {
     backgroundColor: '#44a6c6 ', // Light blue color
     color: 'white', // White text for better contrast
     fontSize: '14px', // Adjust font size as needed (optional)
+    
     '&:hover': {
-      backgroundColor: '#87ceeb', // Darker blue on hover
+      backgroundColor: '#4465c6', // Darker blue on hover
     },
   };
     const [page, setPage] = useState(0);
@@ -51,8 +52,8 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
         </TableRow >
           <TableRow>
             <TableCell>Email</TableCell>
-            <TableCell align="right">Role</TableCell>
-            <TableCell align="right">Status</TableCell>
+            <TableCell align="center">Role</TableCell>
+            <TableCell align="center">Status</TableCell>
             <TableCell align="right">Dernier Modification</TableCell>
             
           </TableRow>
@@ -61,7 +62,7 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
         {Users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
             <TableRow
             onDoubleClick={() => handleUserSelect(row, index)}
-            style={{ cursor: 'pointer', backgroundColor: selectedRowIndex  === index ? '#f0f0f0' : 'transparent' }} // Change background color of selected row
+            style={{ cursor: 'pointer', backgroundColor: selectedRowIndex  === index ? '#cbe6ef' : 'transparent' }} // Change background color of selected row
 
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -69,10 +70,11 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
               <TableCell component="th" scope="row">
                 {row.username}
               </TableCell>
-              <TableCell align="right">{row.role.name}</TableCell>
-              <TableCell align="right">{row.enabled ?
-              <Chip label="Activer" style={styles} size="small"  deleteIcon={<DoneIcon />}/> : 
-              <Chip label="Désactiver" style={styles} size="small"   deleteIcon={<DoneIcon />}/>}</TableCell>
+              <TableCell  align="center">{row.role.name==='admin' ? <Chip label="admin" sx={{ fontSize: '14px', paddingX:1}}  size="small" /> :
+              <Chip label="user" sx={{fontSize: '14px',paddingX:1}} size="small" /> }</TableCell>
+              <TableCell align="center">{row.enabled ?
+              <Chip label="Activer" sx={stylechip}  size="small"  deleteIcon={<DoneIcon />}/> : 
+              <Chip label="Désactiver" sx={stylechip} size="small"   deleteIcon={<DoneIcon />}/>}</TableCell>
               <TableCell align="right">{row.updatedAt}</TableCell>
              
             </TableRow>

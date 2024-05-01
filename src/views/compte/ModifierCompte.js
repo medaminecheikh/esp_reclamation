@@ -8,6 +8,7 @@ import DataTableUser from './compo/DataTableUser';
 import UpdateForm from './compo/UpdateForm';
 
 
+
 function ModifierCompte (){
   
   const [ListUsers, setListUsers] = useState([]);
@@ -17,6 +18,8 @@ function ModifierCompte (){
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedUserIndex, setSelectedUserIndex] = useState(null);
+
+
   const handleUserSelect = (user, index) => {
     setSelectedUser(user);
     setSelectedUserIndex(index); // Save the index of the selected user
@@ -66,7 +69,7 @@ function ModifierCompte (){
 
      
 
-        <Box  boxShadow={2} padding={3} sx={{  flexGrow: 1,  bgcolor:'white' }}> 
+ <Box  boxShadow={2} padding={3} sx={{  flexGrow: 1,  bgcolor:'white' }}> 
         <Grid justifyContent={'center'} alignItems={'flex-start'} container>
         <Typography variant='h2' mt={2}  sx={{textDecorationColor:'info'}} > Liste des Utilisateurs</Typography>
         
@@ -76,7 +79,10 @@ function ModifierCompte (){
 
             <UpdateForm  initialUser={selectedUser} onFormReset={handleFormReset}/>
        </Grid>
-        
+        <Grid item xs={12} >
+
+      
+        </Grid>
        
         </Grid>  
         <Snackbar  open={openSnackbar} autoHideDuration={10000} onClose={handleCloseSnackbar}
@@ -85,7 +91,7 @@ function ModifierCompte (){
        {snackbarMessage}
      </Alert>
    </Snackbar>
-        </Box>
+ </Box>
       
        
      
