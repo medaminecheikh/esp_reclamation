@@ -69,7 +69,7 @@ function UpdateForm({initialUser, onFormReset  }) {
       setSnackbarSeverity("success");
       resetForm();
      
-      
+      onFormReset(); 
      
      
     } catch (error) {
@@ -91,7 +91,7 @@ function UpdateForm({initialUser, onFormReset  }) {
         <Grid item xs={12}>
           <Stack spacing={4}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Typography variant="h3">Information du Compte {initialUser?.username}</Typography>
+              <Typography variant="h3">Information du Compte </Typography>
               <IconButton aria-label="delete" size="meduim" color="error">
                 <DeleteIcon fontSize="inherit" />
               </IconButton>
@@ -112,14 +112,14 @@ function UpdateForm({initialUser, onFormReset  }) {
         aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider'}}
       >
-             <Tab icon={<PersonPinCircleOutlined />} iconPosition="start" label="Detail Compte" value="1" />
-            <Tab icon={<Key />} iconPosition="start" label="Credential" value="2" />
+             <Tab icon={<PersonPinCircleOutlined />} sx={{paddingRight:6}} iconPosition="start" label="Detail Compte" value="1" />
+            <Tab icon={<Key />} sx={{paddingRight:6}} iconPosition="start" label="Password" value="2" />
         
       </TabList>
       <TabPanel value="1" >
         
            {/* Email and Password fields */}
-           <Stack direction="row" maxWidth={'100%'} justifyContent={'space-evenly'} display={'flex'} spacing={2}>
+           <Stack direction="row" width={'100%'} justifyContent={'space-evenly'} display={'flex'} spacing={3}>
               <TextField
                 label="Email"
                 id="username"

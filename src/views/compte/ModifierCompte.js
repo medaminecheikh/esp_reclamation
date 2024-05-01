@@ -29,6 +29,7 @@ function ModifierCompte (){
   const handleFormReset = () => {
     setSelectedUser(null);
     setSelectedUserIndex(null); // Reset the selected index when the form is reset
+   
   };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -36,9 +37,7 @@ function ModifierCompte (){
   
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        
-        
+      try {  
        
           const response = await UserGetAll();
           if (response) {
@@ -63,7 +62,7 @@ function ModifierCompte (){
   
     fetchData(); // Call the async function to fetch data
   
-  }, []);
+  }, [selectedUserIndex, selectedUser]);
   
     return (
 
