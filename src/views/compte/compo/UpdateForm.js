@@ -18,7 +18,7 @@ function UpdateForm({initialUser, onFormReset  }) {
   const validationSchema = Yup.object({
     username: Yup.string().notRequired(),
     password: Yup.string().notRequired(),
-    role: Yup.string().notRequired(),
+   
     enabled: Yup.string().notRequired(),
   });
   const handleCancel = () => {
@@ -38,7 +38,7 @@ function UpdateForm({initialUser, onFormReset  }) {
         id: initialUser.id || '',
         username: initialUser.username || '',
         password: '',
-        role: initialUser.role?.name || '',
+        role: initialUser.role|| '',
         enabled: initialUser.enabled?.toString() || '',
       });
     }
@@ -50,7 +50,7 @@ function UpdateForm({initialUser, onFormReset  }) {
       id: '',
       username: '',
       password: '',
-      role: '',
+      role: {id:'',name:''},
       enabled: '',
     },
     validationSchema: validationSchema,
@@ -113,11 +113,11 @@ function UpdateForm({initialUser, onFormReset  }) {
                   labelId="role-label"
                   id="role"
                   size="small"
-                  {...formik.getFieldProps('role')}
+                  {...formik.getFieldProps('role.id')}
                 
                 >
-                  <MenuItem value={"user"}>User</MenuItem>
-                  <MenuItem value={"admin"}>Admin</MenuItem>
+                  <MenuItem value={53}>User</MenuItem>
+                  <MenuItem value={52}>Admin</MenuItem>
       
                 </Select>
               </FormControl>
@@ -131,8 +131,8 @@ function UpdateForm({initialUser, onFormReset  }) {
                   {...formik.getFieldProps('enabled')}
                   
                 >
-                  <MenuItem value={"true"}>Activer</MenuItem>
-                  <MenuItem value={"false"}>Desactiver</MenuItem>
+                  <MenuItem value={true}>Activer</MenuItem>
+                  <MenuItem value={false}>Désactiver</MenuItem>
              
                 </Select>
               </FormControl>

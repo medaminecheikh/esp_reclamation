@@ -8,11 +8,19 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Chip, TablePagination, TextField } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
-import { green, grey } from '@mui/material/colors';
 
 
 
 function DataTableUser( { Users, onSelect, selectedRowIndex }) {
+
+  const styles = {
+    backgroundColor: '#44a6c6 ', // Light blue color
+    color: 'white', // White text for better contrast
+    fontSize: '14px', // Adjust font size as needed (optional)
+    '&:hover': {
+      backgroundColor: '#87ceeb', // Darker blue on hover
+    },
+  };
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -63,8 +71,8 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
               </TableCell>
               <TableCell align="right">{row.role.name}</TableCell>
               <TableCell align="right">{row.enabled ?
-              <Chip label="Activer" sx={{color:green[900]}} size="small"  deleteIcon={<DoneIcon />}/> : 
-              <Chip label="Desactiver" sx={{color:grey[900]}} size="small" variant="outlined"  deleteIcon={<DoneIcon />}/>}</TableCell>
+              <Chip label="Activer" style={styles} size="small"  deleteIcon={<DoneIcon />}/> : 
+              <Chip label="Désactiver" style={styles} size="small"   deleteIcon={<DoneIcon />}/>}</TableCell>
               <TableCell align="right">{row.updatedAt}</TableCell>
              
             </TableRow>
