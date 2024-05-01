@@ -62,7 +62,7 @@ function ModifierCompte (){
   
     fetchData(); // Call the async function to fetch data
   
-  }, [selectedUserIndex, selectedUser]);
+  }, [ selectedUser]);
   
     return (
 
