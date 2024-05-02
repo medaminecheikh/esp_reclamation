@@ -70,7 +70,7 @@ useEffect(() => {
       
         if (response) {
           setroles(response); // Assuming response contains data field with user list
-          console.log('roles', roles) // Logging the fetched data
+        
         } else {
           console.error('Error fetching roles:', response);
           setOpenSnackbar(true);
@@ -83,9 +83,7 @@ useEffect(() => {
       setOpenSnackbar(true);
       setSnackbarMessage("Failed to fetch roles. Please try again.");
       setSnackbarSeverity("error");
-      console.error('Error fetching roles:', error);
-      console.error('Error fetching roles:', response);
-    }
+      console.error('Error fetching roles:', error);    }
   };
 
   fetchData(); // Call the async function to fetch data
