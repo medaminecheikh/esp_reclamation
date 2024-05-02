@@ -56,8 +56,8 @@ function ModifierCompte (){
         setSnackbarMessage("Failed to fetch users. Please try again.");
         setSnackbarSeverity("error");
         console.error('Error fetching users:', error);
-        console.error('Error fetching users:', response);
-      }
+       
+      } 
     };
   
     fetchData(); // Call the async function to fetch data

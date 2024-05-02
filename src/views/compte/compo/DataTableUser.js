@@ -59,7 +59,7 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
           </TableRow>
         </TableHead>
         <TableBody  style={{overflow:'auto'}}> 
-        {Users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
+        {Users?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
             <TableRow
             onDoubleClick={() => handleUserSelect(row, index)}
             style={{ cursor: 'pointer', backgroundColor: selectedRowIndex  === index ? '#cbe6ef' : 'transparent' }} // Change background color of selected row

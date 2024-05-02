@@ -121,10 +121,10 @@ function UpdateForm({initialUser, onFormReset  }) {
             <Tab icon={<Key />} sx={{paddingRight:6}} iconPosition="start" label="Password" value="2" />
         
       </TabList>
-      <TabPanel value="1" >
+      <TabPanel value="1">
         
            {/* Email and Password fields */}
-           <Stack direction="row" width={'100%'} justifyContent={'space-evenly'} display={'flex'} spacing={3}>
+           <Stack direction="row" width={'100%'} style={{marginLeft:'50px'}} justifyContent={'space-evenly'} display={'flex'} spacing={3}>
               <TextField
                 label="Email"
                 id="username"
