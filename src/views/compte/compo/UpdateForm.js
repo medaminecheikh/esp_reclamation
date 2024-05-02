@@ -24,8 +24,11 @@ function UpdateForm({initialUser, onFormReset  }) {
   const validationSchema = Yup.object({
     username: Yup.string().notRequired(),
     password: Yup.string().notRequired(),
-   
-    enabled: Yup.string().notRequired(),
+    confirm: Yup.string().when('password', {
+      is: (password) => password !== null && password !== undefined && password !== '', // Check if password is not null, undefined, or an empty string
+      then: Yup.string().oneOf([Yup.ref('password')], 'Passwords must match').required('Required'), // Only require confirm if password is not null
+      otherwise: Yup.string().notRequired(), // Allow confirm to be null if password is null
+    }),    enabled: Yup.string().notRequired(),
   });
   const handleCancel = () => {
     formik.resetForm();
@@ -44,6 +47,7 @@ function UpdateForm({initialUser, onFormReset  }) {
         id: initialUser.id || '',
         username: initialUser.username || '',
         password: '',
+        confirm:'',
         role: initialUser.role|| '',
         enabled: initialUser.enabled?.toString() || '',
       });
@@ -55,6 +59,7 @@ function UpdateForm({initialUser, onFormReset  }) {
     initialValues: {
       id: '',
       username: '',
+      confirm:'',
       password: '',
       role: {id:'',name:''},
       enabled: '',
@@ -161,16 +166,27 @@ function UpdateForm({initialUser, onFormReset  }) {
               </FormControl>
             </Stack>
       </TabPanel>
-      <TabPanel value="2">
+      <TabPanel value="2" sx={{justifyContent:'space-around', display:'flex', flexGrow:1,maxWidth:'60%'}}>
+        <Grid item xs={12} sx={{justifyContent:'space-around', display:'flex', maxWidth:'60%'}}>
       <TextField
                 label="New Password"
                 id="password"
                 variant="filled"
+                type="password"
                 size="small"
                 {...formik.getFieldProps('password')}
-            
+                error={formik.touched.password && Boolean(formik.errors.password)}
               />
-
+              <TextField
+                label="Confirme"
+                id="confirm"
+                variant="filled"
+                type="password"
+                size="small"
+                {...formik.getFieldProps('confirm')}
+                error={formik.touched.confirm && Boolean(formik.errors.confirm)}
+              />
+</Grid>
       </TabPanel>
 
       </TabContext>

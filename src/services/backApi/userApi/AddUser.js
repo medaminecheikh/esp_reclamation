@@ -1,12 +1,23 @@
 import axios from 'axios'
 
-async function AddUser({addUser}) {
+async function AddUser(props) {
     try{
+      console.log('props', props)
       const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
-
+      const {  username, password, role, enabled } = props;
+      const data = {
+        id :'',
+        username,
+        password,
+        role: {
+          id: role.id, // Assuming role is an object with nested id property
+          name: role.name,
+        },
+        enabled,
+      }; // Include specific user data // Since you're not sending any additional data, an empty object is sufficient
+  
         
         const url = `http://localhost:8086/api/user/add`;
-        const data = {addUser}; // Since you're not sending any additional data, an empty object is sufficient
     
         const config = {
           method: 'post',
