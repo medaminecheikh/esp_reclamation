@@ -21,15 +21,13 @@ function UpdateForm({initialUser, onFormReset  }) {
     setValue(newValue);
   };
 
-  const validationSchema = Yup.object({
-    username: Yup.string().notRequired(),
-    password: Yup.string().notRequired(),
-    confirm: Yup.string().when('password', {
-      is: (password) => password !== null && password !== undefined && password !== '', // Check if password is not null, undefined, or an empty string
-      then: Yup.string().oneOf([Yup.ref('password')], 'Passwords must match').required('Required'), // Only require confirm if password is not null
-      otherwise: Yup.string().notRequired(), // Allow confirm to be null if password is null
-    }),    enabled: Yup.string().notRequired(),
-  });
+  const validationSchema =  Yup.object().shape({
+    password: Yup.string().nullable(),
+    confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
+  
+});
+
+ 
   const handleCancel = () => {
     formik.resetForm();
     onFormReset(); 
@@ -42,16 +40,21 @@ function UpdateForm({initialUser, onFormReset  }) {
 
   useEffect(() => {
     console.log('useEffect called');
-    if (initialUser) {
-      formik.setValues({
-        id: initialUser.id || '',
-        username: initialUser.username || '',
-        password: '',
-        confirm:'',
-        role: initialUser.role|| '',
-        enabled: initialUser.enabled?.toString() || '',
-      });
+    try {
+      if (initialUser) {
+        formik.setValues({
+          id: initialUser.id || '',
+          username: initialUser.username || '',
+          password: '',
+          confirm:'',
+          role: initialUser.role || { id: '', name: '' }, 
+           enabled: initialUser.enabled?.toString() || '',
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
+    
   }, [initialUser]);
   
   
@@ -66,7 +69,7 @@ function UpdateForm({initialUser, onFormReset  }) {
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-     try{
+    try{
       console.log(values);
      await UpdateUser(values);
      setOpenSnackbar(true);

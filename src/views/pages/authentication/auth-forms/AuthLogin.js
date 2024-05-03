@@ -3,6 +3,7 @@ import { useNavigate  } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -38,7 +39,7 @@ const FirebaseLogin = ({ ...others }) => {
   const scriptedRef = useScriptRef();
   const [checked, setChecked] = useState(true);
   const navigate = useNavigate (); 
-  
+  const [LoginError, setLoginError] = useState('');
   const { loginUser } = useUser();
   
   const [showPassword, setShowPassword] = useState(false);
@@ -69,7 +70,8 @@ const FirebaseLogin = ({ ...others }) => {
             console.log('Login successful:', response);
            // Store token in session storage
            await loginUser( values.Username, values.Password );
-            
+         
+           
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
@@ -82,9 +84,12 @@ const FirebaseLogin = ({ ...others }) => {
         // Navigate to some default route
       }
           } catch (err) {
+            if(err){
+              setLoginError('Error');
+             }
             console.error('Error logging in:', error);
-            console.error(err);
-           
+             setLoginError(response.token);
+            console.error('Error logging in:', LoginError);
               setStatus({ success: false });
               setErrors({ submit: err.message });
               setSubmitting(false);
@@ -172,6 +177,8 @@ const FirebaseLogin = ({ ...others }) => {
                 </Button>
               </AnimateButton>
             </Box>
+            {LoginError==='Error' ? <Alert style={{position:'absolute' }} sx={{bgcolor:'transparent',mt: 1 }} severity="error">Email ou Mots de passe Incorrect. </Alert>
+: null }
           </form>
         )}
       </Formik>
