@@ -1,6 +1,5 @@
 import DoneIcon from '@mui/icons-material/Done';
-import { Button, FormControl, Grid, Stack, InputLabel, MenuItem, Select, TextField, Typography, IconButton, Divider, Alert, Snackbar } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, FormControl, Grid, Stack, InputLabel, MenuItem, Select, TextField, Typography, Divider, Alert, Snackbar } from '@mui/material'
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import Tab from '@mui/material/Tab';
@@ -10,6 +9,7 @@ import React, { useState, useEffect } from 'react'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import UpdateUser from 'services/backApi/userApi/UpdateUser';
 import { Box } from '@mui/system';
+import DeleteUser from './DeleteUser';
 
 function UpdateForm({initialUser, onFormReset  }) {
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -100,9 +100,8 @@ function UpdateForm({initialUser, onFormReset  }) {
           <Stack spacing={4}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Typography variant="h3">Information du Compte </Typography>
-              <IconButton aria-label="delete" size="meduim" color="error">
-                <DeleteIcon fontSize="inherit" />
-              </IconButton>
+              <DeleteUser deleteUser={initialUser}/>
+             
             </Stack>
             <Divider style={{ marginTop: '10px' }} />
 

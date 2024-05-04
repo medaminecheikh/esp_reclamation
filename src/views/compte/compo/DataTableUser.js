@@ -14,10 +14,10 @@ import DoneIcon from '@mui/icons-material/Done';
 function DataTableUser( { Users, onSelect, selectedRowIndex }) {
 
   const stylechip = {
-    backgroundColor: '#44a6c6 ', // Light blue color
+    backgroundColor: '#3b85b0 ', // Light blue color
     color: 'white', // White text for better contrast
     fontSize: '14px', // Adjust font size as needed (optional)
-    
+    minWidth:'100px',
     '&:hover': {
       backgroundColor: '#4465c6', // Darker blue on hover
     },
@@ -70,8 +70,8 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
               <TableCell component="th" scope="row">
                 {row.username}
               </TableCell>
-              <TableCell  align="center">{row.role.name==='admin' ? <Chip label="admin" sx={{ fontSize: '14px', paddingX:1}}  size="small" /> :
-              <Chip label="user" sx={{fontSize: '14px',paddingX:1}} size="small" /> }</TableCell>
+              <TableCell  align="center">{row.role.name==='admin' ? <Chip label="Admin" color="secondary"  sx={{bgcolor:'#cf0a80',minWidth:'80px', fontSize: '14px', paddingX:1}}  size="small" /> :
+              <Chip label="User" color="secondary"  sx={{bgcolor:'#cf0a80',minWidth:'80px',fontSize: '14px',paddingX:1}} size="small" /> }</TableCell>
               <TableCell align="center">{row.enabled ?
               <Chip label="Activer" sx={stylechip}  size="small"  deleteIcon={<DoneIcon />}/> : 
               <Chip label="Désactiver" sx={stylechip} size="small"   deleteIcon={<DoneIcon />}/>}</TableCell>

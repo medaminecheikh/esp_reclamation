@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 // material-ui
-import { Alert, Box, Grid, Snackbar, Typography } from '@mui/material';
+import { Alert,  Grid, Snackbar, Typography } from '@mui/material';
 
 // project imports
 import UserGetAll from 'services/backApi/userApi/UserGetAll';
 import DataTableUser from './compo/DataTableUser';
 import UpdateForm from './compo/UpdateForm';
+import MainCard from 'ui-component/cards/MainCard';
 
 
 
@@ -66,9 +67,9 @@ function ModifierCompte (){
   
     return (
 
-     
+      <MainCard>
 
- <Box  boxShadow={2} padding={3} sx={{  flexGrow: 1,  bgcolor:'white' }}> 
+
         <Grid justifyContent={'center'} alignItems={'flex-start'} container>
         <Typography variant='h2' mt={2}  sx={{textDecorationColor:'info'}} > Liste des Utilisateurs</Typography>
         
@@ -90,9 +91,9 @@ function ModifierCompte (){
        {snackbarMessage}
      </Alert>
    </Snackbar>
- </Box>
+
       
-       
+ </MainCard>
      
     
  
