@@ -42,7 +42,7 @@ const pages = {
     },
     {
       id: 'application',
-      title: 'Ticket',
+      title: 'Réclamation',
       type: 'item',
       url: '/admin/app',
       icon: icons.IconLayoutBoard,

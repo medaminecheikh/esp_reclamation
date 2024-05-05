@@ -4,11 +4,11 @@ import MainCard from 'ui-component/cards/MainCard'
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-function DetailIssue() {
+function DetailIssue({User}) {
   return (
     <Grid container style={{flexGrow:1}} spacing={1}>
         <Grid item xs={12}  sx={{display:'flex' ,justifyContent:'space-between', alignItems:'center'}}>
-                    <Typography variant='h5'> Sommaire : </Typography>
+                    <Typography variant='h5'> Sommaire : {User?.issue}</Typography>
                     <Chip label='In Progress'></Chip>
         </Grid>
         <Grid item xs={12}  sx={{display:'flex' ,justifyContent:'space-between', alignItems:'center'}}>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {  useState } from 'react';
 import MainCard from '../ui-component/cards/MainCard';
 import TopBar from './appCompo/TopBar';
 import { Grid } from '@mui/material';
@@ -9,9 +9,14 @@ import ListIssuesAdmin from './appCompo/ListIssues';
 
 
 
-class Application extends Component {
+function Application() {
 
-  render() {
+
+    const [selectedUser, setSelectedUser] = useState(null);
+    const handleUserSelect = (user) => {
+      setSelectedUser(user);
+      
+    };
     return (<>
       <MainCard >
           <TopBar />
@@ -19,17 +24,17 @@ class Application extends Component {
       <Grid container spacing={1} style={{marginTop:'3px'}}>
         <Grid item xs={7}>
         <MainCard >
-        <DetailIssue />
+        <DetailIssue User={selectedUser}/>
         </MainCard>
         </Grid>
         <Grid item xs={5}>
         <MainCard >
-          <ListIssuesAdmin />
+          <ListIssuesAdmin onSelect={handleUserSelect}/>
         </MainCard>
         </Grid>
       </Grid>
       </>);
-  }
+
 }
 
 export default Application;

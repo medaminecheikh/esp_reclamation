@@ -47,11 +47,11 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
       <TableContainer component={Paper} style={{ maxHeight: 400 }} >
       <Table stickyHeader  size="small" aria-label="simple table">
         <TableHead>
-        <TableRow hover>
+        <TableRow >
              <TableCell align="center" colSpan={3}><TextField id="standard-basic" label="Search by Email" variant="standard" /></TableCell>
              <TableCell align="center"  colSpan={3}> <TextField id="Role-basic" label="Search by Role" variant="standard" /></TableCell>
         </TableRow >
-          <TableRow hover> 
+          <TableRow > 
             <TableCell>Email</TableCell>
             <TableCell align="center">Role</TableCell>
             <TableCell align="center">Status</TableCell>
@@ -59,7 +59,7 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
             
           </TableRow>
         </TableHead>
-        <TableBody  style={{overflow:'auto'}} hover> 
+        <TableBody  style={{overflow:'auto'}} > 
         {Users?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
             <TableRow
             onDoubleClick={() => handleUserSelect(row, index)}
