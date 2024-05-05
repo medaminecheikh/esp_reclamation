@@ -39,7 +39,7 @@ function DeleteUser({deleteUser}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Annuler</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button color='error' onClick={handleClose} autoFocus>
             Confirmer
           </Button>
         </DialogActions>

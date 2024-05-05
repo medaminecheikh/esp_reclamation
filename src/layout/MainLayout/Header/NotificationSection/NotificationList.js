@@ -43,6 +43,7 @@ const NotificationList = () => {
     padding: '0 6px'
   };
   const chipErrorSX = {
+
     ...chipSX,
     color: theme.palette.orange.dark,
     backgroundColor: theme.palette.orange.light,

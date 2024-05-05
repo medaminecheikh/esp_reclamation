@@ -4,9 +4,10 @@ const projectData = [
   { title: "Published Project", count: 532, progress: 40, color: "secondary" },
   { title: "Completed Task", count: 4569, progress: 70, color: "primary" },
   { title: "Pending Task", count: 1005, progress: 30, color: "error" },
-  { title: "Issues", count: 365, progress: 10, color: "success" },
+  { title: " Completed Issues ", count: 365, progress: 10, color: "success" },
 ];
 function TopBar() {
+    
   return (
     <Grid container spacing={3}>
       {projectData.map((item) => (

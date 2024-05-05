@@ -13,6 +13,7 @@ import DoneIcon from '@mui/icons-material/Done';
 
 function DataTableUser( { Users, onSelect, selectedRowIndex }) {
 
+  
   const stylechip = {
     backgroundColor: '#3b85b0 ', // Light blue color
     color: 'white', // White text for better contrast
@@ -46,11 +47,11 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
       <TableContainer component={Paper} style={{ maxHeight: 400 }} >
       <Table stickyHeader  size="small" aria-label="simple table">
         <TableHead>
-        <TableRow >
+        <TableRow hover>
              <TableCell align="center" colSpan={3}><TextField id="standard-basic" label="Search by Email" variant="standard" /></TableCell>
              <TableCell align="center"  colSpan={3}> <TextField id="Role-basic" label="Search by Role" variant="standard" /></TableCell>
         </TableRow >
-          <TableRow>
+          <TableRow hover> 
             <TableCell>Email</TableCell>
             <TableCell align="center">Role</TableCell>
             <TableCell align="center">Status</TableCell>
@@ -58,7 +59,7 @@ function DataTableUser( { Users, onSelect, selectedRowIndex }) {
             
           </TableRow>
         </TableHead>
-        <TableBody  style={{overflow:'auto'}}> 
+        <TableBody  style={{overflow:'auto'}} hover> 
         {Users?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
             <TableRow
             onDoubleClick={() => handleUserSelect(row, index)}
