@@ -2,14 +2,26 @@ import { Button, Chip, Grid, Paper, Table, TableBody, TableCell, TableContainer,
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import GetAllIssues from 'services/jiraAPI/requests/GetAllIssues';
+import GetIssueById from 'services/jiraAPI/requests/GetIssueById';
 
 
 function ListIssuesAdmin({onSelect}) {
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
   const [AllIssues, setAllIssues] = useState([])
-  const handleUserSelect = (user, index) => {
-    onSelect(user);
+  const handleUserSelect = async (user, index) => {
     setSelectedRowIndex(index);
+    try {
+      if (user && user.id) {
+        const issuesResponse = await GetIssueById(user.id);
+        onSelect(issuesResponse.data);
+        console.log('issuesResponse.data:', issuesResponse.data);
+     }          
+        // Handle the response here, e.g., set state with the data
+     
+    } catch (error) {
+        // Handle errors here, e.g., set state with error message
+        console.error('Error fetching JIRA issues:', error);
+    }
   };
   const handleUserUnSelect = () => {
     onSelect(null);
