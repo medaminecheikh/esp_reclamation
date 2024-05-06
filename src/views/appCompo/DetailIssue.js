@@ -9,6 +9,7 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorIcon from '@mui/icons-material/Error';
 import DeleteIssue from 'services/jiraAPI/requests/DeleteIssue';
+import  { getTransitions, transitionIssue } from 'services/jiraAPI/requests/UpdateIssue';
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -57,6 +58,24 @@ const handleDelete= async ()=>{
     }
 };
 
+const handleComplete = async () => {
+  try {
+      // First, fetch the available transitions for the issue
+      const transitions = await getTransitions(User.id);
+      // Find the transition ID for the "Done" status
+      const doneTransition = transitions.find(transition => transition.name === "Done");
+      if (doneTransition) {
+          await transitionIssue(User.id, doneTransition.id);
+          window.location.reload();
+          console.log('Issue status updated to Done successfully.');
+      } else {
+          console.error('No available transition to Done status.');
+      }
+  } catch (error) {
+      console.error('Error updating issue status:', error);
+  }
+};
+
   return (
     <Grid container style={{flexGrow:1}} spacing={1}>
         <Grid item xs={12}  sx={{display:'flex' ,justifyContent:'space-between', alignItems:'center'}}>
@@ -92,7 +111,7 @@ const handleDelete= async ()=>{
       <Button disabled={!User} onClick={handleDelete} size='small' color='inherit' variant="outlined" startIcon={<DeleteIcon />}>
         Delete
       </Button>
-      <Button disabled={!User} size='small' color='secondary' variant="contained" endIcon={<SendIcon />}>
+      <Button disabled={!User}   onClick={handleComplete} size='small' color='secondary' variant="contained" endIcon={<SendIcon />}>
         Complet
       </Button>
       </Stack>
