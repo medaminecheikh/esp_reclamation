@@ -21,7 +21,7 @@ function ListIssuesAdmin({onSelect}) {
             const issuesResponse = await GetAllIssues();
             setAllIssues(issuesResponse.data.issues);
             // Handle the response here, e.g., set state with the data
-            console.log('Issues:', AllIssues);
+            console.log('Issues all:', AllIssues);
         } catch (error) {
             // Handle errors here, e.g., set state with error message
             console.error('Error fetching JIRA issues:', error);

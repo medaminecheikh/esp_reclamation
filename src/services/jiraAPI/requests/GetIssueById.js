@@ -1,13 +1,14 @@
 import axios from 'axios';
 import {jiraAuth} from "../utils/jiraConst";
-async function GetIssueById({id}) {
+async function GetIssueById(id) {
 try{
+  const UserId =id;
     const JIRA_USERNAME = jiraAuth.username;
     const JIRA_PASSWORD = jiraAuth.password;
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `http://localhost:8080/rest/api/2/issue/${id}`,
+        url: `http://localhost:8080/rest/api/2/issue/${UserId}`,
         headers: {
             'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
             , 'Content-Type': 'application/json'
