@@ -2,6 +2,16 @@ import axios from 'axios';
 import {jiraAuth} from "../utils/jiraConst";
 
 async function GetAllIssues() {
+   /* const { project, status, priority } = props;
+    let jqlFilters = [`project=${project}`];
+if (status) {
+    jqlFilters.push(`status=${status}`);
+}
+if (priority) {
+    jqlFilters.push(`priority=${priority}`);
+}
+
+let jqlQuery = jqlFilters.join(' AND ');*/
     try{
         const JIRA_USERNAME = jiraAuth.username;
         const JIRA_PASSWORD = jiraAuth.password;

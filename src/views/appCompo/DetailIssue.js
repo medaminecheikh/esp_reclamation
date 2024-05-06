@@ -8,6 +8,7 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorIcon from '@mui/icons-material/Error';
+import DeleteIssue from 'services/jiraAPI/requests/DeleteIssue';
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -39,7 +40,14 @@ function DetailIssue({User}) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString("en-US", options);
   }
-
+const handleDelete= async ()=>{
+  try{
+ await DeleteIssue(User.id);
+ window.location.reload();
+  }catch(error){
+    console.error(error)
+  }
+}
   const handleClickFile = () => {
     // Access the content and perform the desired action
     const content = User?.fields?.attachment[0]?.content;
@@ -81,7 +89,7 @@ function DetailIssue({User}) {
         </Grid>
         <Grid item xs={12} marginTop={2} sx={{display:'flex' ,justifyContent:'flex-end', alignItems:'center'}}>
         <Stack direction="row"  spacing={2}>
-      <Button disabled={!User} size='small' color='inherit' variant="outlined" startIcon={<DeleteIcon />}>
+      <Button disabled={!User} onClick={handleDelete} size='small' color='inherit' variant="outlined" startIcon={<DeleteIcon />}>
         Delete
       </Button>
       <Button disabled={!User} size='small' color='secondary' variant="contained" endIcon={<SendIcon />}>
