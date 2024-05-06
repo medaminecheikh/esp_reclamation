@@ -1,22 +1,12 @@
 import { Button, Chip, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
+import GetAllIssues from 'services/jiraAPI/requests/GetAllIssues';
 
-const ListIssues=[
-  { id: 1, issue: 'Lorem ipsum dolor sit amet', tag: 'Tag 1', status: 'Pending' },
-  { id: 2, issue: 'Consectetur adipiscing elit', tag: 'Tag 2', status: 'In Progress' },
-  { id: 3, issue: 'Sed do eiusmod tempor incididunt', tag: 'Tag 3', status: 'Resolved' },
-  { id: 4, issue: 'Ut labore et dolore magna aliqua', tag: 'Tag 4', status: 'Pending' },
-  { id: 5, issue: 'Duis aute irure dolor in reprehenderit', tag: 'Tag 5', status: 'Resolved' },
-  { id: 6, issue: 'Excepteur sint occaecat cupidatat non proident', tag: 'Tag 6', status: 'In Progress' },
-  { id: 7, issue: 'Sunt in culpa qui officia deserunt mollit anim id est laborum', tag: 'Tag 7', status: 'Pending' },
-  { id: 8, issue: 'Lorem ipsum dolor sit amet', tag: 'Tag 8', status: 'Resolved' },
-  { id: 9, issue: 'Consectetur adipiscing elit', tag: 'Tag 9', status: 'In Progress' },
-  { id: 10, issue: 'Sed do eiusmod tempor incididunt', tag: 'Tag 10', status: 'Resolved' },
-];
+
 function ListIssuesAdmin({onSelect}) {
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
-  
+  const [AllIssues, setAllIssues] = useState([])
   const handleUserSelect = (user, index) => {
     onSelect(user);
     setSelectedRowIndex(index);
@@ -25,12 +15,32 @@ function ListIssuesAdmin({onSelect}) {
     onSelect(null);
     setSelectedRowIndex(null);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const issuesResponse = await GetAllIssues();
+            setAllIssues(issuesResponse.data.issues);
+            // Handle the response here, e.g., set state with the data
+            console.log('Issues:', AllIssues);
+        } catch (error) {
+            // Handle errors here, e.g., set state with error message
+            console.error('Error fetching JIRA issues:', error);
+        }
+    };
+
+    fetchData();
+
+    // Cleanup function (optional) if needed
+    return () => {
+        // Perform cleanup tasks if necessary
+    };
+}, []); // Empty dependency array to run only once on component mount
 
   return (
     <Grid container style={{flexGrow:1}} spacing={2}>
          <Grid item xs={12}  sx={{display:'flex' ,justifyContent:'space-between', alignItems:'center'}}>
                     <Typography variant='h4'> Liste des Réclamations </Typography>
-                    <Button size='small' disabled={!selectedRowIndex} onClick={handleUserUnSelect} variant="text">UnSelect</Button>
+                    <Button size='small' disabled={selectedRowIndex===null} onClick={handleUserUnSelect} variant="text">UnSelect</Button>
           </Grid>
           <Grid item xs={12}>
     <TableContainer component={Paper} style={{ maxHeight: 400,minHeight:'400px' }} >
@@ -46,15 +56,15 @@ function ListIssuesAdmin({onSelect}) {
           </TableRow>
         </TableHead>
         <TableBody  style={{overflow:'auto'}} > 
-        {ListIssues.map((row,index) => (
+        {AllIssues?.map((row,index) => (
                 <TableRow 
                 style={{ cursor: 'pointer', backgroundColor: selectedRowIndex  === index ? '#cbe6ef' : 'transparent' }} // Change background color of selected row
 
                 onDoubleClick={() => handleUserSelect(row, index)}
                 key={index}  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell component="th">{row.issue}</TableCell>
+                  <TableCell component="th">{row?.fields.summary}</TableCell>
                   <TableCell align="right">
-                  <Chip variant='filled' size='small' label={row.status}></Chip>
+                  <Chip variant='filled' size='small' label={row?.fields.status?.name}></Chip>
                     </TableCell>
                 </TableRow>
               ))}
