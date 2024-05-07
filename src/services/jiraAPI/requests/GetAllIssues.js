@@ -6,7 +6,7 @@ async function GetAllIssues(props) {
     console.warn('props',props)
     let jqlFilters = [`project=${site}`];
 if (status) {
-    jqlFilters.push(`status=${status}`);
+    jqlFilters.push(`status="${status}"`);
 }
 if (priority) {
     jqlFilters.push(`priority=${priority}`);
