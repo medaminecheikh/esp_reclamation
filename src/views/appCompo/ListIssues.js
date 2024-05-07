@@ -1,13 +1,12 @@
 import { Button, Chip, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import GetAllIssues from 'services/jiraAPI/requests/GetAllIssues';
 import GetIssueById from 'services/jiraAPI/requests/GetIssueById';
 
 
-function ListIssuesAdmin({onSelect}) {
+function ListIssuesAdmin({onSelect,SearchIssues}) {
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
-  const [AllIssues, setAllIssues] = useState([])
+
   const handleUserSelect = async (user, index) => {
     setSelectedRowIndex(index);
     try {
@@ -28,16 +27,8 @@ function ListIssuesAdmin({onSelect}) {
     setSelectedRowIndex(null);
   };
   useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const issuesResponse = await GetAllIssues();
-            setAllIssues(issuesResponse.data.issues);
-            // Handle the response here, e.g., set state with the data
-            console.log('Issues all:', AllIssues);
-        } catch (error) {
-            // Handle errors here, e.g., set state with error message
-            console.error('Error fetching JIRA issues:', error);
-        }
+    const fetchData =  () => {
+      handleUserUnSelect();
     };
 
     fetchData();
@@ -46,7 +37,7 @@ function ListIssuesAdmin({onSelect}) {
     return () => {
         // Perform cleanup tasks if necessary
     };
-}, []); // Empty dependency array to run only once on component mount
+}, [SearchIssues]); // Empty dependency array to run only once on component mount
 
   return (
     <Grid container style={{flexGrow:1}} spacing={2}>
@@ -68,7 +59,7 @@ function ListIssuesAdmin({onSelect}) {
           </TableRow>
         </TableHead>
         <TableBody  style={{overflow:'auto'}} > 
-        {AllIssues?.map((row,index) => (
+        {SearchIssues?.map((row,index) => (
                 <TableRow 
                 style={{ cursor: 'pointer', backgroundColor: selectedRowIndex  === index ? '#cbe6ef' : 'transparent' }} // Change background color of selected row
 

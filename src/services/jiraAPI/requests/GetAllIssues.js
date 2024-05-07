@@ -1,9 +1,10 @@
 import axios from 'axios';
 import {jiraAuth} from "../utils/jiraConst";
 
-async function GetAllIssues() {
-   /* const { project, status, priority } = props;
-    let jqlFilters = [`project=${project}`];
+async function GetAllIssues(props) {
+    const { site, status, priority } = props;
+    console.warn('props',props)
+    let jqlFilters = [`project=${site}`];
 if (status) {
     jqlFilters.push(`status=${status}`);
 }
@@ -11,7 +12,7 @@ if (priority) {
     jqlFilters.push(`priority=${priority}`);
 }
 
-let jqlQuery = jqlFilters.join(' AND ');*/
+let jqlQuery = jqlFilters.join(' AND ');
     try{
         const JIRA_USERNAME = jiraAuth.username;
         const JIRA_PASSWORD = jiraAuth.password;
@@ -23,7 +24,7 @@ let jqlQuery = jqlFilters.join(' AND ');*/
                 'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
                 , 'Content-Type': 'application/json'
             }, params: {
-                jql: 'project=PFE',
+                jql: jqlQuery ,
                 maxResults: 50 // Limit the number of results if needed
             },data:{},
         };
