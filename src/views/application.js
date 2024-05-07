@@ -26,8 +26,9 @@ function Application() {
     useEffect(() => {
       if (data && data.length > 0) {
         console.warn('use effect called ');
-          // Set the site state to the first item in the data array
-          setSite(data[0].key); // Assuming 'key' is the property you want to use
+   
+          setSite(data[0].key); 
+       
       }
   }, [ data]);
 
