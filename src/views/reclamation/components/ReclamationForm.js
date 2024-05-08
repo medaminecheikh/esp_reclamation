@@ -121,6 +121,7 @@ function ReclamationForm() {
                 required
                 labelId="application-select-label"
                 id="projectKey"
+                label="Application"
                 name="projectKey"
               >
                {error ? (
@@ -148,6 +149,7 @@ function ReclamationForm() {
                 required
                 labelId="problem-label"
                 id="labels"
+                label="Problème"
                 name="labels"
 
               >
@@ -169,6 +171,7 @@ function ReclamationForm() {
                 fullWidth
                 labelId="priorite-label"
                 id="priority"
+                label="Priorité"
                 name="priority"
               >
                 <MenuItem value="4">Faible</MenuItem>

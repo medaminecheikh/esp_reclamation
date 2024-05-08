@@ -1,29 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import MainCard from '../ui-component/cards/MainCard';
 import { Grid } from '@mui/material';
 import TopBar from './appCompo/TopBar';
+import ProjetBody from './projetCompo/ProjetBody';
 
-class Projet extends Component {
-  render() {
+function Projet() {
+
+ 
     return (<>
       <MainCard >
           <TopBar />
       </MainCard>
       <Grid container spacing={1} style={{marginTop:'3px'}}>
-        <Grid item xs={7}>
-        <MainCard >
-     
-        </MainCard>
-        </Grid>
-        <Grid item xs={5}>
-        <MainCard >
-         
-        </MainCard>
-        </Grid>
+        <ProjetBody/>
       </Grid>
       </>
     );
-  }
+ 
 }
 
 export default Projet;
