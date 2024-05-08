@@ -23,7 +23,7 @@ function UpdateForm({initialUser, onFormReset  }) {
 
   const validationSchema =  Yup.object().shape({
     password: Yup.string().nullable(),
-    confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Required'),
+    confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').nullable(),
   
 });
 

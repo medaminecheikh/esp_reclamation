@@ -1,9 +1,11 @@
-import { Alert, Avatar, Chip, Divider, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Alert, Avatar, Button, Chip, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import getProjectById from 'services/jiraAPI/requests/getProjetById';
 import UseGetJiraData from 'services/jiraAPI/requests/useGetJiraData';
 import MainCard from 'ui-component/cards/MainCard'
 import GetAllIssues from 'services/jiraAPI/requests/GetAllIssues';
+import getassignableUsers from 'services/jiraAPI/requests/getassignableUsers';
+import AnimateButton from 'ui-component/extended/AnimateButton';
 
 function ProjetBody() {
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
@@ -12,6 +14,11 @@ function ProjetBody() {
   const [issues, setissues] = useState(null);
 
   const { data, error } = UseGetJiraData();
+  const handleUnSelect = ()=>{
+    setSelectedRowIndex(null);
+    setissues(null);
+    setproject(null);
+  }
   const handleUserSelect = async (row, index) => {
     setSelectedRowIndex(index);
   
@@ -20,11 +27,13 @@ function ProjetBody() {
   const response =  await getProjectById(row.id);
   const site=row.id;
   const responseIssue =  await  GetAllIssues({site});
-
+  const availableUsers =  await getassignableUsers(row.key);
+  
   setissues(responseIssue);
 
   setproject(response.data);
   console.log('responseIssue',responseIssue.data);
+  console.log('availableUsers',availableUsers);
 
     } catch(error){
       setErrorGet(error)
@@ -99,9 +108,24 @@ console.error(error);
       </Grid>
       
     </Grid>
-    <Grid item xs={12}>
-    <Divider   style={{ marginTop:'12px' }} ></Divider>
-      </Grid>
+    <Grid> <Divider   style={{ marginTop:'12px' }} ></Divider></Grid>
+    <Grid item xs={12} sx={{display:'flex' ,justifyContent:'flex-end', alignItems:'center',marginTop:'12px' }}>
+    
+    <Stack direction="row"  spacing={2}>
+    <AnimateButton>
+      <Button disabled={!selectedRowIndex} onClick={handleUnSelect} size='small' color='inherit' variant="outlined" >
+        Delete
+      </Button>
+      </AnimateButton>
+      <Grid item sx={{width:'180px'}}>
+                  <AnimateButton>
+                    <Button  disableElevation onClick={handleUnSelect} fullWidth size="small" type="button" variant="contained" color="inherit">
+                      Cancel
+                    </Button>
+                  </AnimateButton>
+                </Grid>
+      </Stack>
+  </Grid>
     {error ? <Alert severity='error'> error has occured</Alert> : null}
     {errorGet ? <Alert severity='error'> error has occured</Alert> : null}
     </Grid> <Grid item > <Divider orientation='vertical'></Divider></Grid>
