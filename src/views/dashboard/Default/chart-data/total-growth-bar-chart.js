@@ -1,5 +1,56 @@
-// ===========================|| DASHBOARD - TOTAL GROWTH BAR CHART ||=========================== //
+import GetAllIssues from "services/jiraAPI/requests/GetAllIssues";
+import getAllProjects from "services/jiraAPI/requests/getAllProjects";
 
+// ===========================|| DASHBOARD - TOTAL GROWTH BAR CHART ||=========================== //
+const projects= await getAllProjects();
+const projectLabels =[];
+const statusDone = 'Done';
+const statusProgress = 'In Progress';
+const statusToDo = 'To Do';
+const seriesData = [
+    { name: 'Done ', data: [] },
+    { name: 'In Progress', data: [] },
+    { name: 'To Do', data: [] }
+ 
+];
+
+// Function to process issues for a single project
+const processProject = async (project,index) => {
+  const site = project.key;
+  projectLabels.push(project.name);
+
+  const allIssues = await GetAllIssues({ site });
+
+  let doneCount = 0;
+  let progressCount = 0;
+  let toDoCount = 0;
+  console.log('allIssues ',allIssues)
+  allIssues.data.issues.forEach(issue => {
+      switch (issue.fields.status.name) {
+          case statusDone:
+              doneCount++;
+              break;
+          case statusProgress:
+              progressCount++;
+              break;
+          case statusToDo:
+              toDoCount++;
+              break;
+          default:
+              break;
+      }
+  });
+
+   // Push the counts to the respective series data arrays
+   seriesData[0].data[index] =  doneCount;
+   seriesData[1].data[index] = progressCount;
+   seriesData[2].data[index] = toDoCount;
+};
+
+// Process issues for all projects concurrently
+await Promise.all(projects.map(processProject));
+console.log('projectLabels ',projectLabels)
+console.log('seriesData ',seriesData)
 const chartData = {
   height: 480,
   type: 'bar',
@@ -34,7 +85,7 @@ const chartData = {
     },
     xaxis: {
       type: 'category',
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      categories: projectLabels
     },
     legend: {
       show: true,
@@ -65,23 +116,6 @@ const chartData = {
       show: true
     }
   },
-  series: [
-    {
-      name: 'Investment',
-      data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
-    },
-    {
-      name: 'Loss',
-      data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
-    },
-    {
-      name: 'Profit',
-      data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
-    },
-    {
-      name: 'Maintenance',
-      data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0]
-    }
-  ]
+  series: seriesData
 };
 export default chartData;
