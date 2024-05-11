@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import {  useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Grid, MenuItem, TextField, Typography } from '@mui/material';
+import { Grid,  Typography } from '@mui/material';
 
 // third-party
 import ApexCharts from 'apexcharts';
@@ -17,26 +17,29 @@ import { gridSpacing } from 'store/constant';
 
 // chart data
 import chartData from './chart-data/total-growth-bar-chart';
-
-const status = [
-  {
-    value: 'today',
-    label: 'Today'
-  },
-  {
-    value: 'month',
-    label: 'This Month'
-  },
-  {
-    value: 'year',
-    label: 'This Year'
-  }
-];
-
+import getAllProjects from 'services/jiraAPI/requests/getAllProjects';
+import GetAllIssues from 'services/jiraAPI/requests/GetAllIssues';
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
+const projects= await getAllProjects();
+let totalIssues=0;
+// Function to process issues for a single project
+const processProject = async (project) => {
+  const site = project.key;
+
+
+  const allIssues = await GetAllIssues({ site });
+
+  
+  console.log('allIssues ',allIssues)
+  totalIssues= totalIssues+ allIssues.data.total;
+
+};
+
+// Process issues for all projects concurrently
+await Promise.all(projects.map(processProject));
+
 
 const TotalGrowthBarChart = ({ isLoading }) => {
-  const [value, setValue] = useState('today');
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
 
@@ -100,21 +103,15 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                 <Grid item>
                   <Grid container direction="column" spacing={1}>
                     <Grid item>
-                      <Typography variant="subtitle2">Total Growth</Typography>
+                      <Typography variant="subtitle2">Total Issues</Typography>
                     </Grid>
                     <Grid item>
-                      <Typography variant="h3">$2,324.00</Typography>
+                     
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item>
-                  <TextField id="standard-select-currency" select value={value} onChange={(e) => setValue(e.target.value)}>
-                    {status.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                <Typography variant="h3">{totalIssues} </Typography>
                 </Grid>
               </Grid>
             </Grid>

@@ -12,7 +12,7 @@ import {IconButton} from '@mui/material';
 import logo from '../../../assets/images/logo.svg';
 import {useNavigate} from 'react-router-dom';
 import {IconToiletPaper} from "@tabler/icons-react";
-import { useUser } from '../../../context/UserContext'; // Import the context
+import {useUser} from '../../../context/UserContext'; // Import the context
 
 const logoStyle = {
     width: '140px',
@@ -25,22 +25,22 @@ function AppAppBar() {
         window.location.reload();
     };
     const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
-    const { logoutUser } = useUser();
-   
+    const {logoutUser} = useUser();
+
     const navigate = useNavigate();
- const handleLogout = async () => {
-    
-    logoutUser();
-    navigate('/login/');
-    console.log('Logout');
-  };
+    const handleLogout = async () => {
+
+        logoutUser();
+        navigate('/login/');
+        console.log('Logout');
+    };
     const navigateToLogs = () => {
         navigate('/esp/historique/'); // Redirect to the specified URL
     };
     const navigateToRec = () => {
         navigate('/esp/reclamation/'); // Redirect to the specified URL
     };
-   
+
     return (
         <div>
             <AppBar
@@ -104,9 +104,10 @@ function AppAppBar() {
                                     <Typography variant="h4" color="#C62828" sx={{marginRight: 1}}>
                                         <i> Espace Réclamation</i>
                                     </Typography>
-                                    {storedUserData ? <Typography variant="body2" color="text.primary" sx={{overflow: 1}}>
-                                    {storedUserData?.username}
-                                    </Typography> : ''}
+                                    {storedUserData ?
+                                        <Typography variant="body2" color="text.primary" sx={{overflow: 1}}>
+                                            {storedUserData?.username}
+                                        </Typography> : ''}
                                 </MenuItem>
 
                                 <MenuItem
@@ -133,7 +134,7 @@ function AppAppBar() {
                                 display: {xs: 'none', md: 'flex'},
                                 gap: 0.5,
                                 alignItems: 'center',
-                                marginLeft:4
+                                marginLeft: 4
                             }}
                         >
                             <Button size="small" color="info" sx={{bgcolor: "#535252"}}

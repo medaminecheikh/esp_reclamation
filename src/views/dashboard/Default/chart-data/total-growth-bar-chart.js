@@ -2,55 +2,60 @@ import GetAllIssues from "services/jiraAPI/requests/GetAllIssues";
 import getAllProjects from "services/jiraAPI/requests/getAllProjects";
 
 // ===========================|| DASHBOARD - TOTAL GROWTH BAR CHART ||=========================== //
-const projects= await getAllProjects();
-const projectLabels =[];
+
+const projectLabels = [];
 const statusDone = 'Done';
 const statusProgress = 'In Progress';
 const statusToDo = 'To Do';
 const seriesData = [
-    { name: 'Done ', data: [] },
-    { name: 'In Progress', data: [] },
-    { name: 'To Do', data: [] }
- 
+    {name: 'Done ', data: []},
+    {name: 'In Progress', data: []},
+    {name: 'To Do', data: []}
+
 ];
+try {
+    const projects = await getAllProjects();
+   
 
 // Function to process issues for a single project
-const processProject = async (project,index) => {
-  const site = project.key;
-  projectLabels.push(project.name);
+    const processProject = async (project, index) => {
+        const site = project.key;
+        projectLabels.push(project.name);
 
-  const allIssues = await GetAllIssues({ site });
+        const allIssues = await GetAllIssues({site});
 
-  let doneCount = 0;
-  let progressCount = 0;
-  let toDoCount = 0;
-  console.log('allIssues ',allIssues)
-  allIssues.data.issues.forEach(issue => {
-      switch (issue.fields.status.name) {
-          case statusDone:
-              doneCount++;
-              break;
-          case statusProgress:
-              progressCount++;
-              break;
-          case statusToDo:
-              toDoCount++;
-              break;
-          default:
-              break;
-      }
-  });
+        let doneCount = 0;
+        let progressCount = 0;
+        let toDoCount = 0;
+        console.log('allIssues ', allIssues)
+        allIssues.data.issues.forEach(issue => {
+            switch (issue.fields.status.name) {
+                case statusDone:
+                    doneCount++;
+                    break;
+                case statusProgress:
+                    progressCount++;
+                    break;
+                case statusToDo:
+                    toDoCount++;
+                    break;
+                default:
+                    break;
+            }
+        });
 
-   // Push the counts to the respective series data arrays
-   seriesData[0].data[index] =  doneCount;
-   seriesData[1].data[index] = progressCount;
-   seriesData[2].data[index] = toDoCount;
-};
+        // Push the counts to the respective series data arrays
+        seriesData[0].data[index] = doneCount;
+        seriesData[1].data[index] = progressCount;
+        seriesData[2].data[index] = toDoCount;
+    };
 
 // Process issues for all projects concurrently
-await Promise.all(projects.map(processProject));
-console.log('projectLabels ',projectLabels)
-console.log('seriesData ',seriesData)
+    await Promise.all(projects.map(processProject));
+} catch (e) {
+    console.error(e);
+}
+
 const chartData = {
   height: 480,
   type: 'bar',

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {jiraAuth} from "../utils/jiraConst";
-async function getassignableUsers(props) {
+async function getassignableUsersToProject(props) {
     try{
       
         
@@ -24,4 +24,4 @@ async function getassignableUsers(props) {
       }
     }
 
-export default getassignableUsers
+export default getassignableUsersToProject
