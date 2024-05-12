@@ -1,5 +1,6 @@
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import React, { useEffect, useState } from 'react'
+import assignIssue from 'services/jiraAPI/requests/assignIssue';
 import getAssignableUsers from 'services/jiraAPI/requests/getAssignableUsersToIssue';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
@@ -8,7 +9,18 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
     const [userSel, setUserSel] = useState('');
     const [users, setUsers] = useState([]);
 
-
+const handleApply= async ()=>{
+    if(userSel && issue){
+    
+      try {
+        const issueKey = issue; // Assuming issue is defined and contains the issue key
+        const userKey = userSel;
+        await assignIssue({issueKey, userKey});
+      } catch (error) {
+        console.error(error);
+      }
+    }
+}
      const handleCancel = ()=>{
       setUserSel('');
       setUsers([]);
@@ -58,8 +70,8 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
       <Grid container width={'95%'} sx={{justifyContent:'space-between', alignItems:'center'}}>
      
     
-      <Grid item xs={7} display={'flex'} justifyContent={'space-evenly'}>
-      <FormControl sx={{minWidth: 150}} size="small">
+      <Grid item xs={7} display={'flex'} justifyContent={'space-between'}>
+      <FormControl sx={{width: 150}} size="small">
       <InputLabel id="enabled-label">Select Issue</InputLabel>
       <Select
     labelId="enabled-label"
@@ -75,7 +87,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
   </Select>
 </FormControl>
 
-<FormControl sx={{minWidth: 150}} size="small">
+<FormControl sx={{width: 150,marginLeft:'30px'}} size="small">
       <InputLabel id="users-label">Select User</InputLabel>
       <Select
     labelId="users-label"
@@ -86,7 +98,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
     variant='standard'
     >
       {users ? users.map((users,index) => (
-         <MenuItem key={index} value={users.key}>{users.name}</MenuItem>
+         <MenuItem key={index} value={users.name}>{users.name}</MenuItem>
       ))  : <MenuItem  value=''>No users were found</MenuItem>}
   </Select>
 </FormControl>
@@ -97,7 +109,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
       <Grid container   justifyContent={'space-evenly'} alignItems={'center'} spacing={1}>
         <Grid item xs={7}>
         <AnimateButton> 
-      <Button disableElevation disabled={!issue || !userSel} fullWidth size="small"
+      <Button disableElevation onClick={handleApply} disabled={!issue || !userSel} fullWidth size="small"
                       type="button" variant="contained" color="info">
                   Apply
                 </Button>

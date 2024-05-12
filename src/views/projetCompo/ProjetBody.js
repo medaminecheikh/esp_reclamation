@@ -139,7 +139,7 @@ function ProjetBody() {
 
                             </Grid>
                             {!cancled ? <>
-                            <Grid> <Divider style={{marginTop: '12px',marginBottom: '8px'}}></Divider></Grid>
+                            <Grid> <Divider style={{marginTop: '12px',marginBottom: '10px'}}></Divider></Grid>
                             <AssignForm cancled={cancled} project={project} issues={issuesWithNoAssignee} handleOpen={handleOpen}/>
                             </> : null}
                             <Grid> <Divider style={{marginTop: '12px'}}></Divider></Grid>
