@@ -20,7 +20,6 @@ import getProjectById from 'services/jiraAPI/requests/getProjetById';
 import UseGetJiraData from 'services/jiraAPI/requests/useGetJiraData';
 import MainCard from 'ui-component/cards/MainCard'
 import GetAllIssues from 'services/jiraAPI/requests/GetAllIssues';
-import getassignableUsersToProject from 'services/jiraAPI/requests/getassignableUsers';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import AssignForm from './AssignForm';
 
@@ -29,13 +28,20 @@ function ProjetBody() {
     const [errorGet, setErrorGet] = useState(null);
     const [project, setproject] = useState(null);
     const [issues, setissues] = useState(null);
-    const [availableUsers, setAvailableUsers] = useState(null);
+    const [issuesWithNoAssignee, setIssuesWithNoAssignee] = useState([]);
     const {data, error} = UseGetJiraData();
+
+
+      // Function to filter issues with no assignee
+      const filterIssuesWithNoAssignee = (issues) => {
+        console.log(issues);
+        return issues.filter(issue => issue.fields && issue.fields.assignee === null);
+    };
     const handleUnSelect = () => {
         setSelectedRowIndex(null);
         setissues(null);
         setproject(null);
-        setAvailableUsers(null);
+        setIssuesWithNoAssignee(null);
     }
     const handleUserSelect = async (row, index) => {
         setSelectedRowIndex(index);
@@ -45,15 +51,12 @@ function ProjetBody() {
                 const response = await getProjectById(row.id);
                 const site = row.id;
                 const responseIssue = await GetAllIssues({site});
-                const available = await getassignableUsersToProject(row.key);
-               
+       
+            const  NoAssignee=  filterIssuesWithNoAssignee(responseIssue.data.issues);  
                 setissues(responseIssue);
-                setAvailableUsers(available);
+                setIssuesWithNoAssignee(NoAssignee);
                 setproject(response.data);
-                console.log('responseIssue', responseIssue.data);
-                
-             
-                console.log('Project by id:', response);
+       
             } catch (error) {
                 setErrorGet(error)
                 console.error(error);
@@ -108,18 +111,18 @@ function ProjetBody() {
                                 <Grid item xs={12}>
                                     <Typography variant="h5">Team:</Typography>
                                     <Chip
-                                        label={project?.lead?.displayName}
-                                        avatar={<Avatar alt={project?.lead?.displayName}
+                                        label={project?.lead?.name}
+                                        avatar={<Avatar alt={project?.lead?.name}
                                                         src={project?.lead?.avatarUrls['48x48']}/>}
                                         style={{marginRight: '5px', marginTop: '7px'}}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Typography variant="h6">-- Users Not assigned:</Typography>
+                                    <Typography variant="h6">-- Issues Not assigned:</Typography>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Typography variant="body1"
-                                                textAlign="right">{availableUsers?.data?.length || 'Not available'}</Typography>
+                                    <Typography variant="h5"
+                                                textAlign="right">{issuesWithNoAssignee ? issuesWithNoAssignee.length : 'Not available'}</Typography>
 
                                 </Grid>
                                 <Grid item xs={6}>
@@ -143,7 +146,7 @@ function ProjetBody() {
                                     <AnimateButton>
                                         <Button disabled={!selectedRowIndex} onClick={handleUnSelect} size='small'
                                                 color='primary' variant="outlined">
-                                            Assign User
+                                            Assign Issue
                                         </Button>
                                     </AnimateButton>
                                     <Grid item sx={{width: '180px'}}>
@@ -199,7 +202,7 @@ function ProjetBody() {
             </Grid>
             <Grid item xs={8} >
             <MainCard>
-                <AssignForm projectKey={project?.key}/>
+                <AssignForm project={project} issues={issuesWithNoAssignee}/>
             </MainCard>
             </Grid>
 
