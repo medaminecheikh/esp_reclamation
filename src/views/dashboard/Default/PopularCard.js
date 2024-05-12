@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -19,7 +19,7 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
-const PopularCard = ({ isLoading }) => {
+const PopularCard = ({ isLoading,ListUsers }) => {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -31,7 +31,12 @@ const PopularCard = ({ isLoading }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    // Filter users with role.name equal to 'admin'
+   
+    setUsers(ListUsers);
+}, [ListUsers]); 
   return (
     <>
       {isLoading ? (
@@ -83,210 +88,42 @@ const PopularCard = ({ isLoading }) => {
                 <BajajAreaChartCard />
               </Grid>
               <Grid item xs={12}>
-                <Grid container direction="column">
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography variant="subtitle1" color="inherit">
-                          Bajaj Finery
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                          <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                              $1839.00
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '5px',
-                                backgroundColor: theme.palette.success.light,
-                                color: theme.palette.success.dark,
-                                ml: 2
-                              }}
-                            >
-                              <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                            </Avatar>
-                          </Grid>
+              {users.map((user, index) => (
+                <Grid item xs={12} key={index}>
+                  <Grid container direction="column">
+                    <Grid item>
+                      <Grid container alignItems="center" justifyContent="space-between">
+                        <Grid item>
+                          <Typography variant="subtitle1" color="inherit">
+                            {user.username || 'not found'}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Avatar
+                            variant="rounded"
+                            sx={{
+                              width: 16,
+                              height: 16,
+                              borderRadius: '5px',
+                              backgroundColor: user.enabled ? theme.palette.success.light : theme.palette.orange.light,
+                              color: user.enabled ? theme.palette.success.dark : theme.palette.orange.dark,
+                              ml: 2
+                            }}
+                          >
+                            {user.enabled ? <KeyboardArrowUpOutlinedIcon fontSize="small" /> : <KeyboardArrowDownOutlinedIcon fontSize="small" />}
+                          </Avatar>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle2" sx={{ color: 'success.dark' }}>
-                      10% Profit
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Divider sx={{ my: 1.5 }} />
-                <Grid container direction="column">
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography variant="subtitle1" color="inherit">
-                          TTML
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                          <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                              $100.00
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '5px',
-                                backgroundColor: theme.palette.orange.light,
-                                color: theme.palette.orange.dark,
-                                marginLeft: 1.875
-                              }}
-                            >
-                              <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                            </Avatar>
-                          </Grid>
-                        </Grid>
-                      </Grid>
+                    <Grid item>
+                      <Typography variant="subtitle2" sx={{ color: user.enabled ? theme.palette.success.dark : theme.palette.orange.dark }}>
+                        {user.enabled ? 'Enabled' : 'Disabled'}
+                      </Typography>
                     </Grid>
                   </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle2" sx={{ color: theme.palette.orange.dark }}>
-                      10% loss
-                    </Typography>
-                  </Grid>
+                  <Divider sx={{ my: 1.5 }} />
                 </Grid>
-                <Divider sx={{ my: 1.5 }} />
-                <Grid container direction="column">
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography variant="subtitle1" color="inherit">
-                          Reliance
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                          <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                              $200.00
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '5px',
-                                backgroundColor: theme.palette.success.light,
-                                color: theme.palette.success.dark,
-                                ml: 2
-                              }}
-                            >
-                              <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                            </Avatar>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle2" sx={{ color: theme.palette.success.dark }}>
-                      10% Profit
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Divider sx={{ my: 1.5 }} />
-                <Grid container direction="column">
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography variant="subtitle1" color="inherit">
-                          TTML
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                          <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                              $189.00
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '5px',
-                                backgroundColor: theme.palette.orange.light,
-                                color: theme.palette.orange.dark,
-                                ml: 2
-                              }}
-                            >
-                              <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                            </Avatar>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle2" sx={{ color: theme.palette.orange.dark }}>
-                      10% loss
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Divider sx={{ my: 1.5 }} />
-                <Grid container direction="column">
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography variant="subtitle1" color="inherit">
-                          Stolon
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                          <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                              $189.00
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '5px',
-                                backgroundColor: theme.palette.orange.light,
-                                color: theme.palette.orange.dark,
-                                ml: 2
-                              }}
-                            >
-                              <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                            </Avatar>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle2" sx={{ color: theme.palette.orange.dark }}>
-                      10% loss
-                    </Typography>
-                  </Grid>
-                </Grid>
+              ))}
               </Grid>
             </Grid>
           </CardContent>

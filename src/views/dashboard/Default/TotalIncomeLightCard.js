@@ -10,6 +10,7 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
+import { useEffect, useState } from 'react';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -39,9 +40,14 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
 
-const TotalIncomeLightCard = ({ isLoading }) => {
+const TotalIncomeLightCard = ({ isLoading,ListUsers }) => {
   const theme = useTheme();
-
+  const [usersActive, setUsersActive] = useState([]);
+  useEffect(() => {
+    // Filter users with role.name equal to 'admin'
+    const filteredAdmins = ListUsers.filter(user => user.enabled === false);
+    setUsersActive(filteredAdmins);
+}, [ListUsers]);
   return (
     <>
       {isLoading ? (
@@ -70,7 +76,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                     mt: 0.45,
                     mb: 0.45
                   }}
-                  primary={<Typography variant="h4">$203k</Typography>}
+                  primary={<Typography variant="h4">{usersActive.length || "00"}</Typography>}
                   secondary={
                     <Typography
                       variant="subtitle2"
@@ -79,7 +85,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                         mt: 0.5
                       }}
                     >
-                      Total Income
+                      Total Disabled Users
                     </Typography>
                   }
                 />

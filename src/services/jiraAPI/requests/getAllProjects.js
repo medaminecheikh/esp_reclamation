@@ -21,7 +21,7 @@ async function getAllProjects() {
         return response.data;
       } catch (error) {
         console.error('Error :', error);
-        throw error; // Throw the error to propagate it to the calling code
+        
       }
     }
 

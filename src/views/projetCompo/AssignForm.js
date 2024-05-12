@@ -16,6 +16,7 @@ const handleApply= async ()=>{
         const issueKey = issue; // Assuming issue is defined and contains the issue key
         const userKey = userSel;
         await assignIssue({issueKey, userKey});
+        window.location.reload();
       } catch (error) {
         console.error(error);
       }

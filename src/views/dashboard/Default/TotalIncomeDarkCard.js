@@ -10,6 +10,7 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import { useEffect, useState } from 'react';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -41,9 +42,14 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL INCOME DARK CARD ||============================== //
 
-const TotalIncomeDarkCard = ({ isLoading }) => {
+const TotalIncomeDarkCard = ({ isLoading,ListUsers }) => {
   const theme = useTheme();
-
+  const [usersActive, setUsersActive] = useState([]);
+  useEffect(() => {
+    // Filter users with role.name equal to 'admin'
+    const filteredAdmins = ListUsers.filter(user => user.enabled === true);
+    setUsersActive(filteredAdmins);
+}, [ListUsers]); 
   return (
     <>
       {isLoading ? (
@@ -74,12 +80,12 @@ const TotalIncomeDarkCard = ({ isLoading }) => {
                   }}
                   primary={
                     <Typography variant="h4" sx={{ color: '#fff' }}>
-                      $203k
+                      {usersActive.length || '00'}
                     </Typography>
                   }
                   secondary={
                     <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                      Total Income
+                      Total Active Users
                     </Typography>
                   }
                 />

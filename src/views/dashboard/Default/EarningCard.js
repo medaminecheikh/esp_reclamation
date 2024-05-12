@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -56,15 +56,19 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const EarningCard = ({ isLoading }) => {
+const EarningCard = ({ isLoading,ListUsers }) => {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [admins, setAdmins] = useState([]);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  useEffect(() => {
+    // Filter users with role.name equal to 'admin'
+    const filteredAdmins = ListUsers.filter(user => user.role.name === 'admin');
+    setAdmins(filteredAdmins);
+}, [ListUsers]); // This effect runs whenever the `users` state changes
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -143,7 +147,9 @@ const EarningCard = ({ isLoading }) => {
               <Grid item>
                 <Grid container alignItems="center">
                   <Grid item>
-                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>$500.00</Typography>
+                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+                      {admins.length || '00.0'}
+                    </Typography>
                   </Grid>
                   <Grid item>
                     <Avatar

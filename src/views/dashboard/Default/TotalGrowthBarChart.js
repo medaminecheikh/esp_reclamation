@@ -20,8 +20,11 @@ import chartData from './chart-data/total-growth-bar-chart';
 import getAllProjects from 'services/jiraAPI/requests/getAllProjects';
 import GetAllIssues from 'services/jiraAPI/requests/GetAllIssues';
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
-const projects= await getAllProjects();
+
 let totalIssues=0;
+try {
+  const projects= await getAllProjects();
+
 // Function to process issues for a single project
 const processProject = async (project) => {
   const site = project.key;
@@ -34,10 +37,11 @@ const processProject = async (project) => {
   totalIssues= totalIssues+ allIssues.data.total;
 
 };
-
 // Process issues for all projects concurrently
-await Promise.all(projects.map(processProject));
-
+  await Promise.all(projects.map(processProject));
+} catch (error) {
+  console.error(error);
+}
 
 const TotalGrowthBarChart = ({ isLoading }) => {
   const theme = useTheme();

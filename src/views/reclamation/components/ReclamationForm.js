@@ -73,6 +73,7 @@ function ReclamationForm() {
                     await PostAttachIssue(response.data.key, values.file);
                 }
                 resetForm(); // Reset form values
+                window.location.reload();
             } catch (error) {
                 console.error('Error posting JIRA issue:', error);
             }
