@@ -24,7 +24,7 @@ import {jiraAuth} from "../utils/jiraConst";
             console.log('Get Jira called');
             axios.request(config)
                 .then((response) => {
-                    console.log(JSON.stringify(response.data));
+             
                     setData(response.data);
                 })
                 .catch((error) => {

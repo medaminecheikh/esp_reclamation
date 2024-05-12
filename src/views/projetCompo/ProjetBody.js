@@ -28,10 +28,13 @@ function ProjetBody() {
     const [errorGet, setErrorGet] = useState(null);
     const [project, setproject] = useState(null);
     const [issues, setissues] = useState(null);
+    const [cancled, setCancled] = useState(true);
     const [issuesWithNoAssignee, setIssuesWithNoAssignee] = useState([]);
     const {data, error} = UseGetJiraData();
 
-
+    const handleOpen = ()=>{
+        setCancled(false);
+    }
       // Function to filter issues with no assignee
       const filterIssuesWithNoAssignee = (issues) => {
         console.log(issues);
@@ -42,10 +45,11 @@ function ProjetBody() {
         setissues(null);
         setproject(null);
         setIssuesWithNoAssignee(null);
+        setCancled(true);
     }
     const handleUserSelect = async (row, index) => {
         setSelectedRowIndex(index);
-
+    
         if (row) {
             try {
                 const response = await getProjectById(row.id);
@@ -134,6 +138,10 @@ function ProjetBody() {
                                 </Grid>
 
                             </Grid>
+                            {!cancled ? <>
+                            <Grid> <Divider style={{marginTop: '12px',marginBottom: '8px'}}></Divider></Grid>
+                            <AssignForm cancled={cancled} project={project} issues={issuesWithNoAssignee} handleOpen={handleOpen}/>
+                            </> : null}
                             <Grid> <Divider style={{marginTop: '12px'}}></Divider></Grid>
                             <Grid item xs={12} sx={{
                                 display: 'flex',
@@ -144,7 +152,7 @@ function ProjetBody() {
 
                                 <Stack direction="row" spacing={2}>
                                     <AnimateButton>
-                                        <Button disabled={!selectedRowIndex} onClick={handleUnSelect} size='small'
+                                        <Button disabled={!selectedRowIndex || !cancled} onClick={handleOpen} size='small'
                                                 color='primary' variant="outlined">
                                             Assign Issue
                                         </Button>
@@ -200,11 +208,7 @@ function ProjetBody() {
                     </Grid>
                 </MainCard>
             </Grid>
-            <Grid item xs={8} >
-            <MainCard>
-                <AssignForm project={project} issues={issuesWithNoAssignee}/>
-            </MainCard>
-            </Grid>
+          
 
         </>
     )

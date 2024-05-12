@@ -1,12 +1,20 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import getAssignableUsers from 'services/jiraAPI/requests/getAssignableUsersToIssue';
+import AnimateButton from 'ui-component/extended/AnimateButton';
 
  function AssignForm(props) {
     const [issue, setIssue] = useState('');
-    const [userS, setUserSel] = useState('');
+    const [userSel, setUserSel] = useState('');
     const [users, setUsers] = useState([]);
 
+
+     const handleCancel = ()=>{
+      setUserSel('');
+      setUsers([]);
+      setIssue('');
+     
+     }
     const handleChangeUser = (event) => {
       setUserSel(event.target.value);
    
@@ -16,8 +24,8 @@ import getAssignableUsers from 'services/jiraAPI/requests/getAssignableUsersToIs
     setIssue(event.target.value);
  
 };
-    const {project, issues } = props;
-  
+    const {project, issues,cancled } = props;
+    console.warn(issues);
     useEffect(() => {
       const fetchData = async () => {
         try {
@@ -26,9 +34,10 @@ import getAssignableUsers from 'services/jiraAPI/requests/getAssignableUsersToIs
           if(projectKey && issueKey){
             const response = await getAssignableUsers({projectKey, issueKey});
           setUsers(response);
-          }else{setUsers([]);}
+          }else{handleCancel();
+            console.info("cancled called in fetchData", cancled);}
          
-          
+          console.info("fetchData called ", fetchData); 
         } catch (error) {
           console.error('Error fetching assignable users:', error);
           // Handle error if needed
@@ -36,16 +45,20 @@ import getAssignableUsers from 'services/jiraAPI/requests/getAssignableUsersToIs
       };
     
       fetchData();
-    
-      // Clean up function
-      return () => {
-        // Any cleanup code here
-      };
     }, [project, issue]);
+    useEffect(() => {
+      if(cancled === true){
+        handleCancel();
+        
+      }
+      console.info("cancled called ", cancled);
+    }, [cancled]);
     
     return (
-      <div>AssignForm   {project?.key || "no selection"}
-      
+      <Grid container width={'95%'} sx={{justifyContent:'space-between', alignItems:'center'}}>
+     
+    
+      <Grid item xs={7} display={'flex'} justifyContent={'space-evenly'}>
       <FormControl sx={{minWidth: 150}} size="small">
       <InputLabel id="enabled-label">Select Issue</InputLabel>
       <Select
@@ -68,7 +81,7 @@ import getAssignableUsers from 'services/jiraAPI/requests/getAssignableUsersToIs
     labelId="users-label"
     id="users"
     label="Select user"
-    value={userS}
+    value={userSel}
     onChange={handleChangeUser}
     variant='standard'
     >
@@ -77,8 +90,40 @@ import getAssignableUsers from 'services/jiraAPI/requests/getAssignableUsersToIs
       ))  : <MenuItem  value=''>No users were found</MenuItem>}
   </Select>
 </FormControl>
+      </Grid>
+   
+      <Grid item xs={3}>
 
-      </div>
+      <Grid container   justifyContent={'space-evenly'} alignItems={'center'} spacing={1}>
+        <Grid item xs={7}>
+        <AnimateButton> 
+      <Button disableElevation disabled={!issue || !userSel} fullWidth size="small"
+                      type="button" variant="contained" color="info">
+                  Apply
+                </Button>
+       </AnimateButton>
+
+        </Grid>
+        <Grid item xs={1}  >
+        <AnimateButton> 
+      <Button disableElevation onClick={handleCancel}  fullWidth size="small"
+                      type="button" variant="contained" color="inherit">
+                  X
+                </Button>
+       </AnimateButton>
+        </Grid>
+   
+
+      </Grid>
+
+     
+      </Grid>
+    
+   
+
+
+ 
+      </Grid>
     )
 
 }
