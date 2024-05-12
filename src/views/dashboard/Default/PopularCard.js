@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography } from '@mui/material';
@@ -21,13 +21,16 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 
 const PopularCard = ({ isLoading,ListUsers }) => {
   const theme = useTheme();
-
+  let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const handleNavigate = () => {
+    // Navigate to the desired path
+    navigate('/admin/gestion/compte/modifier');
+  };
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -128,7 +131,7 @@ const PopularCard = ({ isLoading,ListUsers }) => {
             </Grid>
           </CardContent>
           <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
-            <Button size="small" disableElevation>
+            <Button size="small" disableElevation  onClick={handleNavigate}>
               View All
               <ChevronRightOutlinedIcon />
             </Button>
