@@ -33,7 +33,7 @@ function ProjetBody() {
     const {data, error} = UseGetJiraData();
 
     const handleOpen = ()=>{
-        setCancled(false);
+        setCancled(true);
     }
       // Function to filter issues with no assignee
       const filterIssuesWithNoAssignee = (issues) => {
@@ -152,7 +152,7 @@ function ProjetBody() {
 
                                 <Stack direction="row" spacing={2}>
                                     <AnimateButton>
-                                        <Button disabled={!selectedRowIndex || !cancled} onClick={handleOpen} size='small'
+                                        <Button disabled={selectedRowIndex===null || !cancled} onClick={handleOpen} size='small'
                                                 color='primary' variant="outlined">
                                             Assign Issue
                                         </Button>

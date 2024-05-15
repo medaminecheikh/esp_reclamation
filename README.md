@@ -1,75 +1,111 @@
-# Getting Started with Create React App
+# React Jira Integration Setup
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Prerequisites
+1. Node.js and npm installed on your machine.
+2. A Jira account and a Jira project.
 
-## Available Scripts
+## Project Setup
 
-In the project directory, you can run:
+### Step 1: Clone the Repository
 
-### `Yarn`
+```bash
+git clone <your-repo-url>
+cd <your-repo-name>
+```
 
-Install packages
+### Step 2: Install Dependencies
 
-### `Yarn start`
+```bash
+npm install
+```
 
-Runs the app in the development mode.\
+### Step 3: Configure Credentials
 
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+In your project, navigate to `services/jiraAPI/requests.js`. Configure your Jira credentials and server domain as follows:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```javascript
+import { JIRA_USERNAME, JIRA_PASSWORD } from '../utils/jiraConst';
 
-### `yarn test`
+export const jiraAuth = {
+  username: JIRA_USERNAME,
+  password: JIRA_PASSWORD,
+};
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+export const jiraRequest = {
+  url: `http://localhost:8080/`, // Replace with your Jira server domain
+  // Other configurations...
+};
+```
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Step 4: CORS Configuration
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+In Jira, set your app's address as allowed to avoid CORS errors. This can be done in the Jira server configuration settings. You need to whitelist your frontend URL in the Jira CORS settings.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Step 5: Create a Custom Field in Jira
 
-### `yarn eject`
+1. Go to Jira Administration > Issues.
+2. Under Fields, click Custom Fields.
+3. Click "Add Custom Field".
+4. Choose a field type and click "Next". (e.g., Text Field)
+5. Name your custom field 'Sendermail' and configure it as needed.
+6. Add this field to the screens used by your project.
+/* the custom field should be customfield_10112 or else change it in 'ReclamationForm.js' */
+### Step 6: Start the Development Server
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Usual React Setup Process
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Create a New React App
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+If you haven't already created your React app, you can do so using Create React App:
 
-## Learn More
+```bash
+npx create-react-app my-app
+cd my-app
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This will create a new React application and start the development server.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Directory Structure
 
-### Code Splitting
+Ensure your project has the following structure:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+my-app/
+├── node_modules/
+├── public/
+├── src/
+│   ├── components/
+│   ├── services/
+│   │   ├── jiraAPI/
+│   │   │   └── requests.js
+│   ├── utils/
+│   │   └── jiraConst.js
+│   ├── App.js
+│   ├── index.js
+│   └── ...
+├── .env
+├── package.json
+├── README.md
+└── ...
+```
 
-### Analyzing the Bundle Size
+### Useful Scripts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **Start the development server**: `npm start`
+- **Build for production**: `npm run build`
+- **Run tests**: `npm test`
 
-### Making a Progressive Web App
+### Additional Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. **Eslint and Prettier**: Configure Eslint and Prettier for consistent code formatting.
+2. **Environment Variables**: Use `.env` file to manage environment-specific configurations.
 
-### Advanced Configuration
+## Conclusion
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Follow the steps above to configure your React app to work with Jira, handle CORS issues, and set up the necessary Jira custom fields. For further customization, refer to the Jira and React documentation.

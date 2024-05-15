@@ -118,9 +118,7 @@ function ListIssues({dataIssueByField, errorIssueByField}) {
                                     - {issue.fields.description}
                                 </Typography>
 
-                                <Typography variant="body1" component="span">
-                                    <strong>Fichier:</strong> {issue.fields.fichier} {/* Assuming 'fichier' is correct */}
-                                </Typography>
+                            
 
 
                                 {/* Add other details with similar structure */}

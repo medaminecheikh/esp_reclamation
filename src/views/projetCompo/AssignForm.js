@@ -47,6 +47,7 @@ const handleApply= async ()=>{
           if(projectKey && issueKey){
             const response = await getAssignableUsers({projectKey, issueKey});
           setUsers(response);
+          console.info("users", users);
           }else{handleCancel();
             console.info("cancled called in fetchData", cancled);}
          
@@ -98,9 +99,10 @@ const handleApply= async ()=>{
     onChange={handleChangeUser}
     variant='standard'
     >
-      {users ? users.map((users,index) => (
-         <MenuItem key={index} value={users.name}>{users.name}</MenuItem>
-      ))  : <MenuItem  value=''>No users were found</MenuItem>}
+      <MenuItem  value="mohamedamine">mohamedamine</MenuItem>
+      <MenuItem  value="marzouki">marzouki</MenuItem>
+      <MenuItem  value="alibelgasem">alibelgasem</MenuItem>
+     
   </Select>
 </FormControl>
       </Grid>
