@@ -94,7 +94,29 @@ my-app/
 ├── README.md
 └── ...
 ```
+## for Production mode : Set Up Environment Variables
 
+Create a `.env` file in the root of your project and add your Jira credentials:
+
+```env
+REACT_APP_JIRA_USERNAME=<your-jira-username>
+REACT_APP_JIRA_PASSWORD=<your-jira-password>
+REACT_APP_JIRA_DOMAIN=<your-jira-domain>
+```
+
+Update `services/jiraAPI/requests.js` to use these environment variables:
+
+```javascript
+export const jiraAuth = {
+  username: process.env.REACT_APP_JIRA_USERNAME,
+  password: process.env.REACT_APP_JIRA_PASSWORD,
+};
+
+export const jiraRequest = {
+  url: process.env.REACT_APP_JIRA_DOMAIN,
+  // Other configurations...
+};
+```
 ### Useful Scripts
 
 - **Start the development server**: `npm start`
