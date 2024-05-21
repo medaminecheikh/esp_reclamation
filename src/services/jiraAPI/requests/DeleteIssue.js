@@ -1,18 +1,16 @@
 import axios from 'axios';
-import {jiraAuth} from "../utils/jiraConst";
 async function DeleteIssue(id) {
     try{
+      const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
         const UserId =id;
-          const JIRA_USERNAME = jiraAuth.username;
-          const JIRA_PASSWORD = jiraAuth.password;
+        
           let config = {
               method: 'DELETE',
               maxBodyLength: Infinity,
-              url: `http://localhost:8080/rest/api/2/issue/${UserId}`,
+              url: `http://localhost:8086/api/jira/DeleteIssue/${UserId}`,
               headers: {
-                  'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
-                  , 'Content-Type': 'application/json'
-              }
+                'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
+             }
           };
           const response = await axios.request(config);
              

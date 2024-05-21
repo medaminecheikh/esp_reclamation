@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {jiraAuth} from "../utils/jiraConst";
 
 
 function GetIssueByField() {
@@ -8,20 +7,16 @@ function GetIssueByField() {
 
     const [errorIssueByField, setErrorIssueByField] = useState(null);
     const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
-    let fieldValue = storedUserData.username.replace('@', '\\u0040');
-    const JIRA_USERNAME = jiraAuth.username;
-    const JIRA_PASSWORD = jiraAuth.password;
+ 
+
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: 'http://localhost:8080/rest/api/2/search',
+        url: 'http://localhost:8086/api/jira/GetIssueByField/'+storedUserData.username,
         headers: {
-            'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
-            , 'Content-Type': 'application/json'
+            'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
         },
-                params: { // Pass fieldValue as a parameter in the request
-                    jql: `Sendermail ~ ${fieldValue}` // Modify to use fieldValue in JQL
-                }
+             
     };
     useEffect(() => {
         const fetchData = async () => {

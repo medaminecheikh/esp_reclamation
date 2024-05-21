@@ -57,7 +57,7 @@ function ReclamationForm() {
                     summary: values.summary,
                     description: values.description,
                     issuetype: {name: 'Bug'}, // or any other issue type you want
-                    customfield_10112: storedUserData.username,
+                    customfield_10034: storedUserData.username,
                     labels: [values.labels],
                     priority: {id: values.priority}
                     // Additional fields as needed

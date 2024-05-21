@@ -1,25 +1,20 @@
 import axios from 'axios';
-import { jiraAuth } from "../utils/jiraConst";
 
 async function getAverageResolutionTime() {
-    const JIRA_USERNAME = jiraAuth.username;
-    const JIRA_PASSWORD = jiraAuth.password;
+   
+    const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
 
     try {
         // Retrieve issues using JQL query
-        const response = await axios.get('http://localhost:8080/rest/api/2/search', {
-            params: {
-                jql: 'resolutiondate is not empty', // Filter issues that have been resolved
-                maxResults: 1000 // Adjust maxResults as needed to retrieve all issues
-            },
-            headers: {
-                'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`,
-                'Content-Type': 'application/json'
-            }
+        const response = await axios.get('http://localhost:8086/api/jira/getAverageResolutionTime', {
+       
+        headers: {
+            'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
+        }
         });
 
         const issues = response.data.issues;
-
+console.log("AVERAGE",response)
         // Calculate total resolution time and total number of resolved issues
         let totalResolutionTime = 0;
         let resolvedIssuesCount = 0;
@@ -36,6 +31,7 @@ async function getAverageResolutionTime() {
         // Calculate average resolution time
         const averageResolutionTimeMs  = totalResolutionTime / resolvedIssuesCount;
         const averageResolutionTime = msToHumanReadable(averageResolutionTimeMs);
+        console.log("averageResolutionTime",averageResolutionTime)
         // Return the average resolution time (in milliseconds)
         return averageResolutionTime;
     } catch (error) {

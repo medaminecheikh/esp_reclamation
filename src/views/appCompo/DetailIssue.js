@@ -9,7 +9,7 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorIcon from '@mui/icons-material/Error';
 import DeleteIssue from 'services/jiraAPI/requests/DeleteIssue';
-import {getTransitions, transitionIssue} from 'services/jiraAPI/requests/UpdateIssue';
+import { transitionIssue} from 'services/jiraAPI/requests/UpdateIssue';
 
 const getStatusColor = (status) => {
     switch (status) {
@@ -61,16 +61,13 @@ function DetailIssue({User}) {
     const handleComplete = async () => {
         try {
             // First, fetch the available transitions for the issue
-            const transitions = await getTransitions(User.id);
+           
             // Find the transition ID for the "Done" status
-            const doneTransition = transitions.find(transition => transition.name === "Done");
-            if (doneTransition) {
-                await transitionIssue(User.id, doneTransition.id);
+           
+                await transitionIssue(User.id);
                 window.location.reload();
                 console.log('Issue status updated to Done successfully.');
-            } else {
-                console.error('No available transition to Done status.');
-            }
+           
         } catch (error) {
             console.error('Error updating issue status:', error);
         }
@@ -85,7 +82,7 @@ function DetailIssue({User}) {
                       icon={icon}></Chip>
             </Grid>
             <Grid item xs={12} sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Typography variant='caption'> From : {User?.fields.customfield_10112} </Typography>
+                <Typography variant='caption'> From : {User?.fields.customfield_10034} </Typography>
                 <Typography variant='caption'> At : {formatDate(User?.fields.created)} </Typography>
             </Grid>
             <Grid item xs={12}

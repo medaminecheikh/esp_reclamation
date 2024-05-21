@@ -1,30 +1,21 @@
 import axios from 'axios';
-import {jiraAuth} from "../utils/jiraConst";
 
 async function GetAllIssues(props) {
     const { site, status, priority } = props;
-    console.warn('props',props)
-    let jqlFilters = [`project=${site}`];
-if (status) {
-    jqlFilters.push(`status="${status}"`);
-}
-if (priority) {
-    jqlFilters.push(`priority=${priority}`);
-}
+    const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
 
-let jqlQuery = jqlFilters.join(' AND ');
     try{
-        const JIRA_USERNAME = jiraAuth.username;
-        const JIRA_PASSWORD = jiraAuth.password;
+
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8080/rest/api/2/search',
+            url: 'http://localhost:8086/api/jira/issuesby',
             headers: {
-                'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
-                , 'Content-Type': 'application/json'
+                'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
             }, params: {
-                jql: jqlQuery ,
+                site: site ,
+                status: status ,
+                priority: priority ,
                 maxResults: 1000 // Limit the number of results if needed
             },data:{},
         };

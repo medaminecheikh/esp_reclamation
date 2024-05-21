@@ -2,7 +2,7 @@
   "name": "esp_reclamation",
   "version": "3.4.2",
   "private": true,
-  "proxy": "http://localhost:8080/",
+  "proxy": "https://razajirasoftware.atlassian.net",
   "dependencies": {
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.3",

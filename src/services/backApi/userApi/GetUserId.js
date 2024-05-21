@@ -15,7 +15,7 @@ async function GetUserId({id}) {
         };
 
         const response = await axios.request(config);
-        return response.data;
+        return response;
       } catch (error) {
           console.error('Error Login:', error);
           throw error;

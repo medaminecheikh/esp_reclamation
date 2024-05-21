@@ -1,19 +1,16 @@
 import axios from 'axios';
-import {jiraAuth} from "../utils/jiraConst";
 async function getassignableUsersToProject(props) {
     try{
-      
+      const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
         
-        const JIRA_USERNAME = jiraAuth.username;
-        const JIRA_PASSWORD = jiraAuth.password;
+
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/rest/api/2/user/assignable/multiProjectSearch?query=query&projectKeys=${props}`,
+            url: `http://localhost:8086/api/jira/getassignableUsersToProject/${props}`,
             headers: {
-                'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
-                , 'Content-Type': 'application/json'
-            }
+              'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
+          }
         };
         const response = await axios.request(config);
            

@@ -1,20 +1,18 @@
-import {jiraAuth} from "../utils/jiraConst";
 import axios from 'axios';
 
 async function PostAttachIssue(key, attachmentData) {
- const JIRA_USERNAME = jiraAuth.username;
-    const JIRA_PASSWORD = jiraAuth.password;
+  const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
     try {
       const formData = new FormData();
     formData.append('file', attachmentData);
-      const url = `http://localhost:8080/rest/api/2/issue/${key}/attachments`;
+      const url = `http://localhost:8086/api/jira/PostAttachIssue/${key}`;
       const config = {
         method: 'POST',
         maxBodyLength: Infinity,
         headers: {
-          'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`,
-               'Content-Type': 'multipart/form-data', 
-          'X-Atlassian-Token': 'no-check'
+          'Authorization': `Bearer ${storedUserData.token}`, // Include the bearer token in the Authorization header
+          'Content-Type': 'multipart/form-data', 
+       
         }
       };
      

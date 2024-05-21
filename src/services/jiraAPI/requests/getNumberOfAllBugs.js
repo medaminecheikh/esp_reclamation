@@ -1,19 +1,14 @@
 import axios from 'axios';
-import { jiraAuth } from "../utils/jiraConst";
+
 async function getNumberOfAllBugs() {
     try {
-        const JIRA_USERNAME = jiraAuth.username;
-        const JIRA_PASSWORD = jiraAuth.password;
+        const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
         // Make a GET request to the Jira API to retrieve all bugs
-        const response = await axios.get('http://localhost:8080/rest/api/2/search', {
-            params: {
-                jql: 'issuetype = Bug', // Filter for bugs
-                maxResults: 0 // We only need the count, so set maxResults to 0
-            },
+        const response = await axios.get('http://localhost:8086/api/jira/getNumberOfAllBugs', {
+         
             headers: {
-                'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`,
-                'Content-Type': 'application/json'
-            }
+                'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
+            },
         });
 
         // Extract the total number of bugs from the response data

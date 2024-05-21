@@ -1,20 +1,16 @@
 import axios from 'axios';
-import {jiraAuth} from "../utils/jiraConst";
 
 async function getAllProjects() {
     try{
       
-        
-        const JIRA_USERNAME = jiraAuth.username;
-        const JIRA_PASSWORD = jiraAuth.password;
+      const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `http://localhost:8080/rest/api/2/project`,
+            url: `http://localhost:8086/api/jira/allprojects`,
             headers: {
-                'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
-                , 'Content-Type': 'application/json'
-            }
+              'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
+          }
         };
         const response = await axios.request(config);
       

@@ -1,37 +1,32 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {jiraAuth} from "../utils/jiraConst";
+
 
 
  function UseGetJiraData() {
     const [data, setData] = useState(null);
 
     const [error, setError] = useState(null);
-
-    const JIRA_USERNAME = jiraAuth.username;
-    const JIRA_PASSWORD = jiraAuth.password;
-    let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: 'http://localhost:8080/rest/api/2/project',
-        headers: {
-            'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
-            , 'Content-Type': 'application/json'
-        }
-    };
+    const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
+    const url = `http://localhost:8086/api/jira/allprojects`;
+   
+  
     useEffect(() => {
         const fetchData = async () => {
             console.log('Get Jira called');
-            axios.request(config)
-                .then((response) => {
-             
-                    setData(response.data);
-                })
-                .catch((error) => {
-                    setError(error);
-                    console.log(error);
-
+            try {
+                const response = await axios.get(url, {
+                    headers: {
+                        'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
+                    },
+                    maxBodyLength: Infinity
                 });
+                console.log('response', response);
+                setData(response.data);
+            } catch (error) {
+                setError(error);
+                console.log(error);
+            }
         };
 
         fetchData();

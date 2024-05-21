@@ -1,18 +1,15 @@
 import axios from 'axios';
-import {jiraAuth} from "../utils/jiraConst";
 async function GetIssueById(id) {
 try{
   const UserId =id;
-    const JIRA_USERNAME = jiraAuth.username;
-    const JIRA_PASSWORD = jiraAuth.password;
+  const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `http://localhost:8080/rest/api/2/issue/${UserId}`,
+        url: `http://localhost:8086/api/jira/GetIssueById/${UserId}`,
         headers: {
-            'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`
-            , 'Content-Type': 'application/json'
-        }
+          'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
+      },
     };
     const response = await axios.request(config);
        

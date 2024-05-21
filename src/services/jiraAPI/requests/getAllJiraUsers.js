@@ -1,11 +1,9 @@
 import axios from 'axios';
-import { jiraAuth } from '../utils/jiraConst';
 
 async function getAllJiraUsers() {
  
-const JIRA_USERNAME = jiraAuth.username;
-const JIRA_PASSWORD = jiraAuth.password;
-const url = `http://localhost:8080/rest/api/2/user/search`;
+
+const url = `http://localhost:8086/api/jira/alljirausers`;
 
 
 let config = {
@@ -13,11 +11,7 @@ let config = {
     url: url,
     
     headers: {
-        'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`,
-        'Content-Type': 'application/json'
-    },
-    params: {
-        maxResults: 1000 // Adjust as needed to fetch more users if necessary
+        'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
     }
 };
 

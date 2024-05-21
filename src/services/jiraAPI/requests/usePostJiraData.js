@@ -2,6 +2,7 @@ import {jiraAuth} from "../utils/jiraConst";
 import axios from 'axios';
 
 async function UsePostJiraIssue (postData) {
+  
 const JIRA_USERNAME = jiraAuth.username;
     const JIRA_PASSWORD = jiraAuth.password;
     try {
