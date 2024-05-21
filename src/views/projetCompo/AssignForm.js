@@ -99,9 +99,10 @@ const handleApply= async ()=>{
     onChange={handleChangeUser}
     variant='standard'
     >
-      <MenuItem  value="mohamedamine">mohamedamine</MenuItem>
-      <MenuItem  value="marzouki">marzouki</MenuItem>
-      <MenuItem  value="alibelgasem">alibelgasem</MenuItem>
+    {users.map((user, index) => (
+    <MenuItem key={index} value={user?.accountId}>{user?.displayName}</MenuItem>
+  ))}
+     
      
   </Select>
 </FormControl>

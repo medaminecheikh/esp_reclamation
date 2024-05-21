@@ -33,7 +33,7 @@ function ProjetBody() {
     const {data, error} = UseGetJiraData();
 
     const handleOpen = ()=>{
-        setCancled(true);
+        setCancled(false);
     }
       // Function to filter issues with no assignee
       const filterIssuesWithNoAssignee = (issues) => {
@@ -115,8 +115,8 @@ function ProjetBody() {
                                 <Grid item xs={12}>
                                     <Typography variant="h5">Team:</Typography>
                                     <Chip
-                                        label={project?.lead?.name}
-                                        avatar={<Avatar alt={project?.lead?.name}
+                                        label={project?.lead?.displayName}
+                                        avatar={<Avatar alt={project?.lead?.displayName}
                                                         src={project?.lead?.avatarUrls['48x48']}/>}
                                         style={{marginRight: '5px', marginTop: '7px'}}
                                     />
