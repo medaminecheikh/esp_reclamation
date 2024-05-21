@@ -1,18 +1,16 @@
-import {jiraAuth} from "../utils/jiraConst";
 import axios from 'axios';
 
 async function UsePostJiraIssue (postData) {
   
-const JIRA_USERNAME = jiraAuth.username;
-    const JIRA_PASSWORD = jiraAuth.password;
+
+    const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
     try {
-      const url = 'http://localhost:8080/rest/api/2/issue';
+      const url = 'http://localhost:8086/api/jira/addissues';
       const config = {
         method: 'POST',
         headers: {
-          'Authorization': `Basic ${btoa(`${JIRA_USERNAME}:${JIRA_PASSWORD}`)}`,
-          'Content-Type': 'application/json'
-        }
+          'Authorization': `Bearer ${storedUserData.token}` // Include the bearer token in the Authorization header
+      },
       };
       const response = await axios.post(url, postData, config);
       return response;
