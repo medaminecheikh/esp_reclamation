@@ -23,13 +23,14 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 import UpdateUser from 'services/backApi/userApi/UpdateUser';
 import {Box} from '@mui/system';
 import DeleteUser from './DeleteUser';
+import RoleGetAll from 'services/backApi/userApi/RoleGetAll';
 
 function UpdateForm({initialUser, onFormReset}) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
     const [value, setValue] = useState('1');
-
+    const [roles, setRoles] = useState([]);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -40,6 +41,16 @@ function UpdateForm({initialUser, onFormReset}) {
 
     });
 
+useEffect( () => {
+    async function fetchData() {
+        const response = await RoleGetAll();
+        setRoles(response);
+        console.log(roles)
+      }
+      fetchData();
+
+  
+}, [])
 
     const handleCancel = () => {
         formik.resetForm();
@@ -162,9 +173,9 @@ function UpdateForm({initialUser, onFormReset}) {
                                                 {...formik.getFieldProps('role.id')}
 
                                             >
-                                                <MenuItem value={53}>User</MenuItem>
-                                                <MenuItem value={52}>Admin</MenuItem>
-
+                                               {roles.length > 0 ? roles.map((role, index) => (
+                                                    <MenuItem key={index} value={role.id}>{role.name}</MenuItem>
+                                                )) : <MenuItem>Data not found</MenuItem>}
                                             </Select>
                                         </FormControl>
 
